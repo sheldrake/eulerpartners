@@ -1,0 +1,18 @@
+baseURL = 'https://eulerpartners.com/'
+locale = 'en-gb'
+title = 'Euler Partners'
+theme = 'PaperMod'  # Change to your chosen theme name
+
+[params]
+    description = "Boutique management and technology consulting"
+    author = "Euler Partners"
+
+[menu]
+    [[menu.main]]
+        identifier = "home"
+        name = "Home"
+        url = "/"
+        weight = 1
+
+[outputs]
+    home = ["HTML", "RSS"]

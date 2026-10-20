@@ -1,0 +1,6 @@
+# ~/.vibe/config.toml
+default_agent = "default"
+
+[tools.bash]
+permission = "ask"
+deny = ["rm -rf *", "sudo *", "curl * | bash", "* ~/.ssh/*"]
