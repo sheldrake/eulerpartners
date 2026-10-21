@@ -105,51 +105,51 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Cohere typography scale */
-.text-web3-14-eyebrow {
+.text-small-eyebrow {
   font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
-.text-web3-14 {
+.text-small {
   font-size: 0.875rem;
 }
 
-.text-web3-16 {
+.text-body {
   font-size: 1rem;
   line-height: 1.6;
 }
 
-.text-web3-18 {
+.text-lead {
   font-size: 1.125rem;
   line-height: 1.6;
 }
 
-.text-web3-20 {
+.text-subheading {
   font-size: 1.25rem;
 }
 
-.text-web3-24 {
+.text-heading-sm {
   font-size: 1.5rem;
 }
 
-.text-web3-28 {
+.text-heading-md {
   font-size: clamp(1.75rem, 4vw, 2.25rem);
   line-height: 1.2;
 }
 
-.text-web3-32 {
+.text-heading-lg {
   font-size: clamp(2rem, 5vw, 2.5rem);
   line-height: 1.2;
 }
 
-.text-web3-48-alt {
+.text-display-sm {
   font-size: clamp(2.5rem, 6vw, 3rem);
   line-height: 1.1;
 }
 
-.text-web3-60 {
+.text-display-lg {
   font-size: clamp(2.75rem, 7vw, 3.5rem);
   line-height: 1.1;
 }
@@ -348,7 +348,6 @@ h1, h2, h3, h4, h5, h6 {
   border: 2px solid transparent;
   transition: var(--transition-slow);
   cursor: pointer;
-  font-size: var(--text-web3-16);
 }
 
 .cta:hover {
@@ -471,11 +470,11 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .service-text-wrapper {
-    flex: 0 1 60%;
+    flex: 0 1 50%;
   }
 
   .service-deliverables {
-    flex: 0 1 40%;
+    flex: 0 1 50%;
   }
 
   .service-card-1,
@@ -557,7 +556,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .service-eyebrow {
-  font-size: var(--text-web3-14);
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -568,7 +566,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .service-card-cohere h3 {
-  font-size: var(--text-web3-28);
   line-height: 1.2;
   margin-bottom: var(--space-md);
   font-weight: 600;
@@ -577,7 +574,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .service-description {
-  font-size: var(--text-web3-16);
   max-width: 440px;
   margin-bottom: var(--space-lg);
   line-height: 1.6;
@@ -608,7 +604,6 @@ h1, h2, h3, h4, h5, h6 {
 .service-deliverables-title {
   display: inline-block;
   align-self: flex-start;
-  font-size: var(--text-web3-14);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -625,7 +620,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .service-deliverables-list li {
-  font-size: var(--text-web3-14);
   font-weight: 600;
   line-height: 1.5;
   padding-bottom: var(--space-sm);
@@ -791,7 +785,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .eyebrow {
-  font-size: var(--text-web3-14);
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -800,7 +793,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .terms-section h2 {
-  font-size: var(--text-web3-32);
   line-height: 1.2;
   margin-bottom: var(--space-lg);
   color: var(--text-dark);
@@ -829,12 +821,10 @@ h1, h2, h3, h4, h5, h6 {
   display: block;
   margin-bottom: var(--space-xs);
   color: var(--text-dark);
-  font-size: var(--text-web3-16);
 }
 
 .terms-list span {
   color: var(--text-medium);
-  font-size: var(--text-web3-16);
 }
 
 /* ===== Evidence Section ===== */
@@ -850,7 +840,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .evidence-section h2 {
-  font-size: var(--text-web3-32);
   line-height: 1.2;
   margin-bottom: var(--space-lg);
   color: var(--text-dark);
@@ -864,7 +853,6 @@ h1, h2, h3, h4, h5, h6 {
   padding: var(--space-sm) 0;
   border-bottom: 1px solid #e2e8f0;
   color: var(--text-medium);
-  font-size: var(--text-web3-16);
 }
 
 .evidence-list li:last-child {
@@ -884,7 +872,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .contact-section h2 {
-  font-size: var(--text-web3-32);
   line-height: 1.2;
   margin-bottom: var(--space-lg);
   color: var(--text-dark);
@@ -895,7 +882,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .contact-info p {
-  font-size: var(--text-web3-18);
   line-height: 1.8;
   color: var(--text-dark);
 }
@@ -926,7 +912,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .footer p {
-  font-size: var(--text-web3-14);
   color: var(--text-light);
   margin: 0;
 }

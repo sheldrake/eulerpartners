@@ -6,7 +6,7 @@
 
 # Hugo build output and caches
 /public/
-/resources/_gen/
+/resources/
 .hugo_build.lock
 
 # OS / sync noise
