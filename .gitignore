@@ -8,6 +8,7 @@
 /public/
 /resources/
 .hugo_build.lock
+.phcode.json
 
 # OS / sync noise
 .DS_Store

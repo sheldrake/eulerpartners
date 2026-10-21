@@ -6,8 +6,9 @@
   /* Brand colors */
   --brand-primary: #7ba696;
   --brand-dark: #2d3748;
+  --brand-alt: #eda27c;
 
-  /* Cohere-inspired colors */
+  /* Colors */
   --bg-off-white: #f0eee9;
   --bg-dark-green: #062c22;
   --bg-black: #000000;
@@ -32,6 +33,8 @@
   --space-xl: 3rem;
   --space-2xl: 4rem;
   --space-3xl: 5rem;
+  --space-4xl: 6rem;
+  --space-5xl: 7rem;
 
   /* Layout */
   --max-width: 1200px;
@@ -233,9 +236,9 @@ h1, h2, h3, h4, h5, h6 {
   background-color: var(--bg-off-white);
 }
 
-/* ===== Hero Intro - Cohere style white space with tagline ===== */
+/* ===== Hero Intro ===== */
 .hero-intro, .section-title {
-  padding: var(--space-3xl) 0 var(--space-3xl);
+  padding: var(--space-5xl) 0 var(--space-3xl) 0;
   background-color: var(--bg-off-white);
 }
 
@@ -537,7 +540,6 @@ h1, h2, h3, h4, h5, h6 {
     top: calc(var(--card-stack-offset) * 2);
     z-index: 3;
   }
-}
 
 /* Left text container - Cohere style */
 .service-text-wrapper {
@@ -676,6 +678,7 @@ h1, h2, h3, h4, h5, h6 {
   border-bottom-color: rgba(255, 255, 255, 0.15);
 }
 
+/*
 .service-card-2 {
   background-color: var(--bg-black);
   color: var(--text-pure-white);
@@ -718,6 +721,52 @@ h1, h2, h3, h4, h5, h6 {
   color: rgba(255, 255, 255, 0.85);
   border-bottom-color: rgba(255, 255, 255, 0.15);
 }
+*/
+
+.service-card-2 {
+  background-color: var(--brand-alt);
+  color: var(--brand-dark);
+}
+
+.service-card-2 .service-eyebrow {
+  color: oklch(from var(--brand-alt) calc(l - 0.8) c h);
+}
+
+.service-card-2 h3 {
+  color: var(--text-dark);
+}
+
+.service-card-2 .service-description {
+  color: oklch(from var(--brand-alt) calc(l - 0.8) c h);
+}
+
+.service-card-2 .cta {
+  background-color: var(--text-pure-white);
+  color: var(--bg-black);
+  border-color: transparent;
+}
+
+.service-card-2 .cta:hover {
+  background-color: transparent;
+  border-color: var(--text-pure-white);
+  color: var(--text-pure-white);
+}
+
+.service-card-2 .service-deliverables {
+  background-color: oklch(from var(--brand-alt) calc(l - 0.1) c h);
+}
+
+.service-card-2 .service-deliverables-title {
+  background-color: var(--bg-off-white);
+  color: var(--bg-black);
+}
+
+.service-card-2 .service-deliverables-list li {
+  color: var(--brand-dark);
+  border-bottom-color: rgba(255, 255, 255, 0.15);
+}
+
+
 
 .service-card-3 {
   background-color: var(--bg-white);
@@ -980,7 +1029,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .hero-intro,  .section-title {
-    padding: var(--space-xl) 0 var(--space-3xl) 0;
+    padding: var(--space-5xl) 0 var(--space-3xl) 0;
   }
 
   .hero-intro h1, .section-title h1 {
