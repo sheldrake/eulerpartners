@@ -384,7 +384,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ===== Services Section - Cohere Stacking Card Style ===== */
 @media (min-width: 768px) {
-  .services-section {
+  .section {
     width: 100vw;
     margin-left: calc(50% - 50vw);
     padding: 0;
@@ -424,7 +424,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .services-section {
-  padding: var(--space-xl) 0;
+  padding: var(--space-xl) 0 var(--space-3xl) 0 ;
   background-color: var(--bg-off-white);
   position: relative;
 }
@@ -439,7 +439,8 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (min-width: 768px) {
   .services-section {
-    padding: 0 var(--space-lg);
+    padding: var(--space-xl) 0 var(--space-3xl) 0 ;
+}
   }
 
   .services-container {
@@ -898,7 +899,7 @@ h1, h2, h3, h4, h5, h6 {
   text-decoration: underline;
 }
 
-/* ===== Footer ===== */
+/* ===== Footer =====
 .footer {
   padding: var(--space-xl) 0;
   border-top: 1px solid #e2e8f0;
@@ -914,6 +915,45 @@ h1, h2, h3, h4, h5, h6 {
 .footer p {
   color: var(--text-light);
   margin: 0;
+}
+*/
+/* ============================================================
+   Footer — dark green, full width, centred
+   ============================================================ */
+.footer {
+  max-width: none;   /* ← override PaperMod */
+  width: 100%;
+  padding: var(--space-2xl) 0;
+  background-color: var(--bg-dark-green);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.footer .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--space-sm);
+}
+
+.footer p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.875rem;
+}
+
+.footer a {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  transition: var(--transition);
+}
+
+.footer a:hover {
+  color: var(--text-pure-white);
+  border-bottom-color: rgba(255, 255, 255, 0.7);
 }
 
 /* ===== Responsive Design ===== */
@@ -1063,5 +1103,145 @@ h1, h2, h3, h4, h5, h6 {
 
   .section {
     page-break-inside: avoid;
+  }
+}
+
+
+
+/* ============================================================
+   How We Work — numbered principles, grid-filled down columns
+   ============================================================ */
+.terms-section {
+  padding: var(--space-2xl) 0;
+}
+
+.terms-list {
+  --principle-num-size: 3.5rem;
+  /* Items per column. Bump to 3 when you have 5–6 principles, etc. */
+  --principle-rows: 2;
+
+  list-style: none;
+  counter-reset: principle;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(var(--principle-rows), auto);
+  align-items: start;      /* top-align items across each row */
+  column-gap: var(--space-xl);
+}
+
+.terms-list li {
+  counter-increment: principle;
+  display: block;
+  position: relative;
+  margin: 0;
+  padding: var(--space-md) 0 var(--space-lg)
+           calc(var(--principle-num-size) + var(--space-md));
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 0;
+}
+
+/* The big number — absolutely placed so text always starts at the top */
+.terms-list li::before {
+  content: counter(principle);
+  position: absolute;
+  top: var(--space-md);
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--principle-num-size);
+  height: var(--principle-num-size);
+  border-radius: var(--radius-full);
+  background-color: var(--brand-primary);
+  color: var(--bg-dark-green);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.terms-list strong {
+  display: block;
+  margin-bottom: var(--space-xs);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.terms-list span {
+  color: var(--text-medium);
+}
+
+@media (max-width: 767px) {
+  .terms-list {
+    --principle-num-size: 3rem;
+    display: block;          /* single-column reading order on mobile */
+  }
+
+  .terms-list li::before {
+    font-size: 1.25rem;
+  }
+}
+
+
+/* ============================================================
+   Evidence — compact multi-column list with ticks
+   ============================================================ */
+.evidence-section {
+  padding: var(--space-2xl) 0;
+}
+
+.evidence-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 var(--space-xl);
+}
+
+@media (min-width: 640px) {
+  .evidence-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1024px) {
+  .evidence-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.evidence-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid #e2e8f0;
+  color: var(--text-medium);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.evidence-list li::before {
+  content: "";
+  flex: none;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 0.2em;
+  background-color: var(--brand-primary);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+/* Every item keeps its rule so the rows read as a ledger across columns */
+.evidence-list li:last-child {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+@media (max-width: 767px) {
+  .terms-section,
+  .evidence-section {
+    padding: var(--space-lg) 0;
   }
 }
