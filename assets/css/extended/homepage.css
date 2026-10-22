@@ -8,6 +8,7 @@
   --brand-dark: #2d3748;
   --brand-alt: #eda27c;
   --brand-alt2: #845969; /* #7ca2ed #8db3fe */
+  --brand-alt3: #0b4032;
 
   /* Colors */
   --bg-off-white: #f0eee9;
@@ -690,7 +691,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Individual card colors */
 .service-card-1 {
-  background-color: var(--bg-dark-green);
+  background-color: var(--brand-alt3);
   color: var(--text-pure-white);
 }
 
@@ -719,7 +720,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .service-card-1 .service-deliverables {
-  background-color: #0b4032;
+  background-color: oklch(from var(--brand-alt3) calc(l - 0.05) c h);
 }
 
 .service-card-1 .service-deliverables-title {
@@ -836,9 +837,21 @@ h1, h2, h3, h4, h5, h6 {
   color: oklch(from var(--brand-alt2) calc(l - 0.8) c h);
 }
 
+.service-card-4 .service-eyebrow {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.service-card-4 h3 {
+  color: var(--text-pure-white);
+}
+
+.service-card-4 .service-description {
+  color: rgba(255, 255, 255, 0.8);
+}
+
 .service-card-4 .cta {
   background-color: var(--text-pure-white);
-  color: var(--bg-black);
+  color: var(--brand-primary);
   border-color: transparent;
 }
 
@@ -849,18 +862,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .service-card-4 .service-deliverables {
-  background-color: oklch(from var(--brand-alt2) calc(l - 0.1) c h);
+  background-color: oklch(from var(--brand-alt2) calc(l - 0.05) c h);
 }
 
 .service-card-4 .service-deliverables-title {
   background-color: var(--bg-off-white);
-  color: var(--bg-black);
+  color: var(--bg-dark-green);
 }
 
 .service-card-4 .service-deliverables-list li {
-  color: var(--brand-dark);
+  color: rgba(255, 255, 255, 0.85);
   border-bottom-color: rgba(255, 255, 255, 0.15);
 }
+
 
 /* Stacking spacer to create the scroll effect */
 .service-stack-spacer {
