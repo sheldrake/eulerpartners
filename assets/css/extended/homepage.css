@@ -37,22 +37,22 @@
   --font-serif: Georgia, 'Times New Roman', serif;
 
   /* Spacing */
-  --space-xs: 0.5rem;
-  --space-sm: 1rem;
-  --space-md: 1.5rem;
-  --space-lg: 2rem;
-  --space-xl: 3rem;
-  --space-2xl: 4rem;
-  --space-3xl: 5rem;
-  --space-4xl: 6rem;
-  --space-5xl: 7rem;
+  --space-xs: 0.4rem;
+  --space-sm: 0.8rem;
+  --space-md: 1.2rem;
+  --space-lg: 1.8rem;
+  --space-xl: 2.8rem;
+  --space-2xl: 3.5rem;
+  --space-3xl: 4.5rem;
+  --space-4xl: 5.5rem;
+  --space-5xl: 6.5rem;
 
   /* Layout */
   --max-width: 1200px;
   --container-padding: 0 1rem;
   --header-height: 64px;
   --card-width: 95vw;
-  --card-stack-offset: 100px;
+  --card-stack-offset: 70px;
 
   /* Scroll distance the fully seated card stack holds still before
      leaving the viewport as one unit (driven by js/services.js) */
@@ -115,7 +115,7 @@ body, h1, h2, h3, h4, h5, h6, p, span, a, div {
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.1;
   color: var(--text-dark);
 }
 
@@ -146,16 +146,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .text-heading-sm {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
 }
 
 .text-heading-md {
-  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-size: clamp(1.3rem, 4vw, 2.2rem);
   line-height: 1.2;
 }
 
 .text-heading-lg {
-  font-size: clamp(2rem, 5vw, 2.5rem);
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
   line-height: 1.2;
 }
 
@@ -508,9 +508,7 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 0.7rem;
   }
 
-  /* The eyebrow owns the top strip of the card, one overlap gap tall,
-     so it stays visible when the next card stacks over this one.
-     Flex centering keeps it vertically centred at one or two lines. */
+  /* The eyebrow owns the top strip of the card, one overlap gap tall, so it stays visible when the next card stacks over this one. Flex centering keeps it vertically centred at one or two lines. */
   .service-eyebrow {
     height: auto;
     margin: calc(var(--card-stack-offset)/3) 0 calc(var(--card-stack-offset)/6) 0;
@@ -519,11 +517,11 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .service-text-wrapper {
-    flex: 0 1 50%;
+    flex: 0 1 60%;
   }
 
   .service-deliverables {
-    flex: 0 1 50%;
+    flex: 0 1 40%;
   }
 
   .service-card-1,
@@ -625,7 +623,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .service-card-cohere h3 {
-  line-height: 1.2;
+  line-height: 1.1;
   margin-bottom: var(--space-md);
   font-weight: 600;
   position: relative;
@@ -634,8 +632,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .service-description {
   max-width: 440px;
-  margin-bottom: var(--space-lg);
-  line-height: 1.6;
+  margin-bottom: var(--space-sm);
+  line-height: 1.3;
   position: relative;
   z-index: 12;
 }
@@ -680,7 +678,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .service-deliverables-list li {
   font-weight: 600;
-  line-height: 1.5;
+  line-height: 1.3;
   padding-bottom: var(--space-sm);
   border-bottom: 1px solid rgba(128, 128, 128, 0.25);
 }
