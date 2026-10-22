@@ -6,7 +6,7 @@
 
 ## Site wiring
 - `assets/css/extended/homepage.css` — homepage styles, bundled automatically by PaperMod.
-- `static/js/header.js` — header listener (show/hide on scroll), loaded from `layouts/partials/header.html`.
+- `static/js/header.js` — header listener (show/hide on scroll) and hamburger nav toggle (shows the dropdown on small viewports, styles in `homepage.css` under the `max-width: 768px` block), loaded from `layouts/_partials/header.html`.
 - `static/js/services.js` — services card stack (pinned stage, scroll-driven card travel, dwell before group exit), loaded from `layouts/index.html`. Fallback: per-card `position: sticky` in `homepage.css`.
 
 # General info

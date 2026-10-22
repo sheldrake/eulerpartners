@@ -242,6 +242,30 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--brand-primary);
 }
 
+/* Hamburger toggle - hidden on desktop, shown on small viewports (below) */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.nav-toggle-line {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: var(--text-dark);
+  border-radius: 1px;
+  transition: transform 0.25s ease;
+}
+
 /* ===== Spacer for fixed header ===== */
 .header-spacer {
   height: var(--header-height);
@@ -258,8 +282,16 @@ h1, h2, h3, h4, h5, h6 {
   max-width: 700px;
 }
 
-.hero-intro h1, .section-title h1 {
-  font-size: clamp(3rem, 7vw, 4rem);
+.hero-intro h1 {
+  font-size: clamp(2.5rem, 10vw, 5rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-md);
+  font-weight: 600;
+}
+
+.section-title h1 {
+  font-size: clamp(2.5rem, 7vw, 4rem);
   line-height: 1.2;
   letter-spacing: -0.02em;
   margin-bottom: var(--space-md);
@@ -308,7 +340,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .hero-panel-left {
-  background-color: var(--brand-primary);
+  background-color: oklch(from var(--brand-primary) calc(l * 0.8) c h);
   color: var(--text-pure-white);
 }
 
@@ -480,7 +512,8 @@ h1, h2, h3, h4, h5, h6 {
      so it stays visible when the next card stacks over this one.
      Flex centering keeps it vertically centred at one or two lines. */
   .service-eyebrow {
-    height: var(--card-stack-offset);
+    height: auto;
+    margin: calc(var(--card-stack-offset)/3) 0 calc(var(--card-stack-offset)/6) 0;
     display: flex;
     align-items: center;
   }
@@ -586,8 +619,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  margin-top: 0;
-  margin-bottom: calc(var(--space-md) * 1.4 * 0 / 3);
+    margin: calc(var(--card-stack-offset)/3) 0 calc(var(--card-stack-offset)/6) 0;
   opacity: 1;
   transition: opacity 0.3s ease;
 }
@@ -1048,12 +1080,52 @@ h1, h2, h3, h4, h5, h6 {
     gap: var(--space-md);
   }
 
+  /* Hamburger menu: toggle appears, links drop down under the header */
+  .js .nav-toggle {
+    display: inline-flex;
+  }
+
+  .js .nav-toggle[aria-expanded="true"] .nav-toggle-line:first-child {
+    transform: translateY(3.5px) rotate(45deg);
+  }
+
+  .js .nav-toggle[aria-expanded="true"] .nav-toggle-line:last-child {
+    transform: translateY(-3.5px) rotate(-45deg);
+  }
+
+  .js .nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    padding: var(--space-xs) var(--space-md) var(--space-md);
+    background-color: var(--bg-white);
+    border-bottom: 1px solid #e2e8f0;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+  }
+
+  .js .nav.nav-open {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .js .nav a {
+    padding: var(--space-sm) 0;
+    font-size: 1.0625rem;
+  }
+
   .hero-intro,  .section-title {
     padding: var(--space-5xl) 0 var(--space-3xl) 0;
   }
 
-  .hero-intro h1, .section-title h1 {
-    font-size: clamp(1.75rem, 6vw, 2.5rem);
+  .section-title h1 {
+    font-size: clamp(1.75rem,6vw,2.5rem);
   }
 
   .hero {
@@ -1122,10 +1194,6 @@ h1, h2, h3, h4, h5, h6 {
   .nav {
     flex-wrap: wrap;
     justify-content: center;
-  }
-
-  .hero-intro h1 {
-    font-size: 1.75rem;
   }
 
   .hero-subtitle {
