@@ -7,6 +7,7 @@
   --brand-primary: #7ba696;
   --brand-dark: #2d3748;
   --brand-alt: #eda27c;
+  --brand-alt2: #8db3fe; /* #7ca2ed; */
 
   /* Colors */
   --bg-off-white: #f0eee9;
@@ -470,8 +471,8 @@ h1, h2, h3, h4, h5, h6 {
     flex-direction: row;
     justify-content: space-between;
     gap: var(--space-lg);
-    /* With the eyebrow's margin-bottom this totals 2.8rem, a third less
-       than the previous 4.2rem. Flex children do not collapse margins. */
+    /* With the eyebrow's margin-bottom this totals 2.1rem. Flex children
+       do not collapse margins. */
     margin-top: 0.7rem;
   }
 
@@ -494,12 +495,13 @@ h1, h2, h3, h4, h5, h6 {
 
   .service-card-1,
   .service-card-2,
-  .service-card-3 {
+  .service-card-3,
+  .service-card-4 {
     position: sticky;
     width: 100%;
     min-height: var(--card-min-height);
     border-radius: var(--radius-xl);
-    padding: 0 5.3125rem 4.5rem 3.125rem;
+    padding: 0 5.3125rem 2rem 3.125rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     justify-content: flex-start;
   }
@@ -519,6 +521,11 @@ h1, h2, h3, h4, h5, h6 {
     z-index: 3;
   }
 
+  .service-card-4 {
+    top: calc(40px + var(--card-stack-offset) * 3);
+    z-index: 4;
+  }
+
   /* JS-driven stacking (js/services.js adds .stack-js on desktop):
      the stage pins, cards travel to their seats inside it, hold for
      --stack-dwell, then the whole stage leaves with the page scroll.
@@ -530,7 +537,8 @@ h1, h2, h3, h4, h5, h6 {
 
   .services-section.stack-js .service-card-1,
   .services-section.stack-js .service-card-2,
-  .services-section.stack-js .service-card-3 {
+  .services-section.stack-js .service-card-3,
+  .services-section.stack-js .service-card-4 {
     position: absolute;
     left: 0;
     right: 0;
@@ -550,6 +558,11 @@ h1, h2, h3, h4, h5, h6 {
   .services-section.stack-js .service-card-3 {
     top: calc(var(--card-stack-offset) * 2);
     z-index: 3;
+  }
+
+  .services-section.stack-js .service-card-4 {
+    top: calc(var(--card-stack-offset) * 3);
+    z-index: 4;
   }
 
 /* Left text container - Cohere style */
@@ -574,7 +587,7 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: 0.05em;
   text-transform: uppercase;
   margin-top: 0;
-  margin-bottom: calc(var(--space-md) * 1.4);
+  margin-bottom: calc(var(--space-md) * 1.4 * 0 / 3);
   opacity: 1;
   transition: opacity 0.3s ease;
 }
@@ -732,8 +745,6 @@ h1, h2, h3, h4, h5, h6 {
   border-bottom-color: rgba(255, 255, 255, 0.15);
 }
 
-
-
 .service-card-3 {
   background-color: var(--bg-white);
   color: var(--text-dark);
@@ -776,6 +787,49 @@ h1, h2, h3, h4, h5, h6 {
 .service-card-3 .service-deliverables-list li {
   color: var(--text-medium);
   border-bottom-color: var(--border-color);
+}
+
+.service-card-4 {
+  background-color: var(--brand-alt2);
+  color: var(--brand-dark);
+}
+
+.service-card-4 .service-eyebrow {
+  color: oklch(from var(--brand-alt2) calc(l - 0.8) c h);
+}
+
+.service-card-4 h3 {
+  color: var(--text-dark);
+}
+
+.service-card-4 .service-description {
+  color: oklch(from var(--brand-alt2) calc(l - 0.8) c h);
+}
+
+.service-card-4 .cta {
+  background-color: var(--text-pure-white);
+  color: var(--bg-black);
+  border-color: transparent;
+}
+
+.service-card-4 .cta:hover {
+  background-color: transparent;
+  border-color: var(--text-pure-white);
+  color: var(--text-pure-white);
+}
+
+.service-card-4 .service-deliverables {
+  background-color: oklch(from var(--brand-alt2) calc(l - 0.1) c h);
+}
+
+.service-card-4 .service-deliverables-title {
+  background-color: var(--bg-off-white);
+  color: var(--bg-black);
+}
+
+.service-card-4 .service-deliverables-list li {
+  color: var(--brand-dark);
+  border-bottom-color: rgba(255, 255, 255, 0.15);
 }
 
 /* Stacking spacer to create the scroll effect */
@@ -1349,6 +1403,7 @@ h1, h2, h3, h4, h5, h6 {
 .partners-section {
   padding: var(--space-xl) 0;
   background-color: var(--bg-off-white);
+}
 
 .partner-grid {
   display: grid;
