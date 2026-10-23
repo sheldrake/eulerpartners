@@ -171,6 +171,101 @@
       </div>
     </section>
 
+    <section class="proof-section" id="proof">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow text-small">Evidence</p>
+          <h2 class="text-heading-lg">The Proof.</h2>
+        </div>
+        <div class="proof-split">
+          <div class="proof-figure">
+            <img src="/images/london-aerial.jpg" alt="" loading="lazy" decoding="async">
+            <img src="/images/paris.jpg" alt="" loading="lazy" decoding="async">
+            <img src="/images/newyork.jpg" alt="" loading="lazy" decoding="async">
+            <img src="/images/rotterdam.jpg" alt="" loading="lazy" decoding="async">
+          </div>
+          <ul class="proof-list">
+            <li class="proof-item">
+              <div class="proof-item__panel">
+                <h3 class="proof-title">
+                  <button class="proof-toggle" id="proof-control-1" aria-expanded="true" aria-controls="proof-panel-1">
+                    Safe-to-fail experiments
+                  </button>
+                </h3>
+                <div class="proof-content" id="proof-panel-1" role="region" aria-labelledby="proof-control-1">
+                  <div class="proof-content__inner">
+                    <p class="text-body">Promises are cheap. We prefer evidence: a portfolio of small, reversible interventions designed with your team, each instrumented so you can see what worked and why.</p>
+                    <ul class="proof-points">
+                      <li>Framed, run, and reviewed alongside your people</li>
+                      <li>Real-time feedback loops on every intervention</li>
+                      <li>Clear criteria for what to scale and what to retire</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="proof-item">
+              <div class="proof-item__panel">
+                <h3 class="proof-title">
+                  <button class="proof-toggle" id="proof-control-2" aria-expanded="false" aria-controls="proof-panel-2">
+                    Board-legible governance
+                  </button>
+                </h3>
+                <div class="proof-content" id="proof-panel-2" role="region" aria-labelledby="proof-control-2">
+                  <div class="proof-content__inner">
+                    <p class="text-body">AI value and risk translated into indicators your board can actually steer by — accountabilities, reporting lines, and a measurement design drawn on balanced scorecard heritage.</p>
+                    <ul class="proof-points">
+                      <li>AI inventory, assessment, and compliance</li>
+                      <li>Scorecard and reporting cadence</li>
+                      <li>Buyer-side technical due diligence when you need a platform</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="proof-item">
+              <div class="proof-item__panel">
+                <h3 class="proof-title">
+                  <button class="proof-toggle" id="proof-control-3" aria-expanded="false" aria-controls="proof-panel-3">
+                    Designed to end
+                  </button>
+                </h3>
+                <div class="proof-content" id="proof-panel-3" role="region" aria-labelledby="proof-control-3">
+                  <div class="proof-content__inner">
+                    <p class="text-body">Every engagement carries stop criteria agreed up front. Success is an operating model that runs without us — no dependency, no open-ended retainer.</p>
+                    <ul class="proof-points">
+                      <li>Capability transferred to your team</li>
+                      <li>No pyramid of juniors, no handover gap</li>
+                      <li>Fees that can be tied to agreed outcomes</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="proof-item">
+              <div class="proof-item__panel">
+                <h3 class="proof-title">
+                  <button class="proof-toggle" id="proof-control-4" aria-expanded="false" aria-controls="proof-panel-4">
+                    Senior counsel, always
+                  </button>
+                </h3>
+                <div class="proof-content" id="proof-panel-4" role="region" aria-labelledby="proof-control-4">
+                  <div class="proof-content__inner">
+                    <p class="text-body">The people you meet are the people who do the work. Two partners, sector-agnostic, with an extensive network of specialists to augment capability as needed.</p>
+                    <ul class="proof-points">
+                      <li>Partner-led from first conversation to last</li>
+                      <li>Independent of platform vendors and legacy consulting models</li>
+                      <li>Augmented by specialists only when it helps</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
   <section class="evidence-section" id="evidence">
   <div class="container">
     <div class="section-header">
@@ -319,5 +414,6 @@
   </main>
 
   <script src='{{ "js/services.js" | relURL }}' defer></script>
+  <script src='{{ "js/proof.js" | relURL }}' defer></script>
 
 {{- end -}}

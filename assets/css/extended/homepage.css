@@ -1584,3 +1584,173 @@ h1, h2, h3, h4, h5, h6 {
   height: 30px;
   fill: currentColor;
 }
+
+/* ============================================================
+   Proof Section — Cohere-style split: figure left, accordion right
+   ============================================================ */
+.proof-section {
+  padding: var(--space-2xl) 0;
+  background-color: var(--bg-off-white);
+}
+
+.proof-split {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xl);
+}
+
+@media (min-width: 768px) {
+  .proof-split {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-4xl);
+  }
+
+  .proof-figure,
+  .proof-list {
+    flex: 1 1 50%;
+    min-width: 0;
+  }
+}
+
+.proof-figure {
+  position: relative;
+  max-height: 560px;
+  aspect-ratio: 1360 / 1500;
+  border-radius: var(--radius-lg);
+}
+
+.proof-figure img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  opacity: 0;
+  transition: opacity 700ms ease-in-out;
+}
+
+/* One photo per item, in panel order; js/proof.js moves .is-active.
+   Without JS the first photo stays up. */
+.proof-figure img:first-child,
+.proof-figure img.is-active {
+  opacity: 1;
+}
+
+.proof-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.proof-item__panel {
+  position: relative;
+  padding-top: var(--space-xs);
+  border-top: 1px solid var(--border-color);
+}
+
+.proof-list .proof-item:first-child .proof-item__panel {
+  border-top-color: transparent;
+}
+
+/* Open item carries the gradient accent line, in place of its border */
+.proof-item__panel.is-open::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    var(--brand-primary),
+    var(--brand-alt)
+  );
+}
+
+.proof-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.proof-toggle {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) 0;
+  border: none;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.proof-toggle:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+
+/* Panels animate between explicit px heights set by js/proof.js.
+   Without JS every panel keeps its natural auto height. */
+.proof-content {
+  overflow: hidden;
+  transition: height 700ms ease-in-out;
+}
+
+.proof-content__inner {
+  padding: 0 0 var(--space-lg);
+}
+
+.proof-content__inner p {
+  color: var(--text-medium);
+}
+
+.proof-points {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin: var(--space-md) 0 var(--space-sm);
+  padding: 0;
+}
+
+.proof-points li {
+  position: relative;
+  padding-left: var(--space-md);
+  color: var(--text-dark);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.proof-points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.45em;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: var(--radius-full);
+  background-color: var(--brand-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proof-content,
+  .proof-figure img {
+    transition: none;
+  }
+}
+
+/* Scroll anchoring can latch onto the animating panels and drift the
+   viewport down the page while they expand or collapse, so the whole
+   section is excluded as an anchor candidate. */
+.proof-section,
+.proof-section * {
+  overflow-anchor: none;
+}
+

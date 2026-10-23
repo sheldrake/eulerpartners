@@ -8,6 +8,7 @@
 - `assets/css/extended/homepage.css` — homepage styles, bundled automatically by PaperMod.
 - `static/js/header.js` — header listener (show/hide on scroll) and hamburger nav toggle (shows the dropdown on small viewports, styles in `homepage.css` under the `max-width: 768px` block), loaded from `layouts/_partials/header.html`.
 - `static/js/services.js` — services card stack (pinned stage, scroll-driven card travel, dwell before group exit), loaded from `layouts/index.html`. Fallback: per-card `position: sticky` in `homepage.css`.
+- `static/js/proof.js` — proof section accordion (exclusive open/close with animated panel height, first item open by default) and crossfade of the paired `.proof-figure` photo, loaded from `layouts/index.html`. Without JS all proof panels render expanded and the first photo shows.
 
 # General info
 We are building static website. The homepage is critical, of course. It will describe the new consulting proposition of our two-person consultancy. We are inspired by the look and feel of cohere.com. There's a moderated boldness, a clarity, that invokes a feeling of trustworthiness. Good typography and white space. Well considered responsive design.
