@@ -290,6 +290,7 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.02em;
   margin-bottom: var(--space-md);
   font-weight: 600;
+  text-transform: uppercase;
 }
 
 .section-title h1 {
@@ -322,8 +323,6 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: var(--max-width);
-  margin: 0 auto;
   min-height: 60vh;
 }
 
@@ -346,6 +345,10 @@ h1, h2, h3, h4, h5, h6 {
 .hero-panel-left {
   background-color: oklch(from var(--brand-primary) calc(l * 0.8) c h);
   color: var(--text-pure-white);
+  /* Full-bleed panel: hold the text at the old container edge on wide viewports.
+     Percentages in padding resolve against the containing block (.hero-split),
+     and this panel is 50% of it. */
+  padding-left: max(var(--space-lg), calc(50% - var(--max-width) / 2 + var(--space-lg)));
 }
 
 .hero-panel-right {
@@ -367,6 +370,7 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 10;
   max-width: 554px;
   width: 100%;
+  padding: 2rem 0;
 }
 
 .hero-questions {
