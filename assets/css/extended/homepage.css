@@ -25,13 +25,9 @@
 
   /* Surfaces & shadows */
   --surface-card: color-mix(in oklch, var(--brand-primary) 50%, var(--bg-white));
-  --counter-circle: color-mix(in oklch, var(--brand-alt) 50%, var(--bg-white));
+  --counter-circle: #7ba696;
   --shadow-card: 0 2px 6px rgb(0 0 0 / 0.10);
   --shadow-card-lift: 0 4px 14px rgb(0 0 0 / 0.12);
-
-  /* Evidence cards */
-  --evidence-cut: clamp(10px, 2.5vw, 16px);
-  --evidence-travel: 28px;
 
   /* Typography */
   --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -323,13 +319,13 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-height: 60vh;
+  min-height: 30vh;
 }
 
 @media (min-width: 768px) {
   .hero-split {
     flex-direction: row;
-    min-height: 70vh;
+    min-height: 40vh;
   }
 }
 
@@ -338,7 +334,7 @@ h1, h2, h3, h4, h5, h6 {
   flex: 1;
   min-height: 300px;
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   padding: var(--space-lg);
 }
 
@@ -349,6 +345,7 @@ h1, h2, h3, h4, h5, h6 {
      Percentages in padding resolve against the containing block (.hero-split),
      and this panel is 50% of it. */
   padding-left: max(var(--space-lg), calc(50% - var(--max-width) / 2 + var(--space-lg)));
+  justify-content: flex-start;   /* or align-content: start / align-items: start */
 }
 
 .hero-panel-right {
@@ -373,12 +370,20 @@ h1, h2, h3, h4, h5, h6 {
   padding: 2rem 0;
 }
 
+.hero-text {
+  container-type: inline-size;   /* the text column, not the whole hero */
+}
+
 .hero-questions {
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
-  font-weight: 600;
+  font-size: clamp(1.4rem, 7.5cqw, 3rem);
   line-height: 1.1;
-  margin-bottom: var(--space-lg);
+  font-weight: 600;
   color: var(--text-pure-white);
+  margin-bottom: var(--space-lg);
+}
+
+.hero-questions span {
+  display: block;
 }
 
 .hero-p {
@@ -992,38 +997,6 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-medium);
 }
 
-/* ===== Evidence Section ===== */
-.evidence-section {
-  padding: var(--space-xl) 0;
-  background-color: var(--bg-off-white);
-}
-
-.evidence-section .container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: var(--container-padding);
-}
-
-.evidence-section h2 {
-  line-height: 1.2;
-  margin-bottom: var(--space-lg);
-  color: var(--text-dark);
-}
-
-.evidence-list {
-  list-style: none;
-}
-
-.evidence-list li {
-  padding: var(--space-sm) 0;
-  border-bottom: 1px solid #e2e8f0;
-  color: var(--text-medium);
-}
-
-.evidence-list li:last-child {
-  border-bottom: none;
-}
-
 /* ===== Contact Section ===== */
 .contact-section {
   padding: var(--space-xl) 0;
@@ -1196,7 +1169,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .hero-split {
-    min-height: 60vh;
+    min-height: 40vh;
   }
 
   .hero-panel {
@@ -1237,7 +1210,6 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .terms-section,
-  .evidence-section,
   .contact-section {
     padding: var(--space-lg) 0;
   }
@@ -1317,16 +1289,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .terms-list {
   --principle-num-size: 3.5rem;
-  /* Items per column. Bump to 3 when you have 5–6 principles, etc. */
-  --principle-rows: 2;
-
   list-style: none;
   counter-reset: principle;
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-rows: repeat(var(--principle-rows), auto);
-  align-items: start;      /* top-align items across each row */
-  column-gap: var(--space-xl);
+  display: block;
+  max-width: 600px;
+  margin-inline: auto;
 }
 
 .terms-list li {
@@ -1375,7 +1342,6 @@ h1, h2, h3, h4, h5, h6 {
 @media (max-width: 767px) {
   .terms-list {
     --principle-num-size: 3rem;
-    display: block;          /* single-column reading order on mobile */
   }
 
   .terms-list li::before {
@@ -1383,150 +1349,10 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-
-/* ============================================================
-   Evidence — compact multi-column list with ticks
-   ============================================================ */
-.evidence-section {
-  padding: var(--space-2xl) 0;
-}
-
-.evidence-list {
-  list-style: none;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0 var(--space-xl);
-}
-
-@media (min-width: 640px) {
-  .evidence-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-
-@media (min-width: 1024px) {
-  .evidence-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-
-.evidence-list li {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-sm);
-  padding: var(--space-sm) 0;
-  border-bottom: 1px solid #e2e8f0;
-  color: var(--text-medium);
-  font-size: 0.9375rem;
-  line-height: 1.55;
-}
-
-/* TICK MARKS
-  .evidence-list li::before {
-  content: "";
-  flex: none;
-  width: 1.15rem;
-  height: 1.15rem;
-  margin-top: 0.2em;
-  background-color: var(--brand-primary);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-} */
-
-/* Every item keeps its rule so the rows read as a ledger across columns */
-.evidence-list li:last-child {
-  border-bottom: 1px solid #e2e8f0;
-}
-
 @media (max-width: 767px) {
   .terms-section,
-  .evidence-section {
+  .proof-section {
     padding: var(--space-lg) 0;
-  }
-}
-
-
-/* ===== Evidence cards ===== */
-.evidence-list {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-md);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-@media (min-width: 640px) {
-  .evidence-list { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (min-width: 960px) {
-  .evidence-list { grid-template-columns: repeat(3, 1fr); }
-}
-
-.evidence-card {
-  filter: drop-shadow(var(--shadow-card));
-  transition:
-    opacity 500ms ease,
-    transform 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
-  transition-delay: 0s;
-}
-
-/* hidden state is added by JS, per card — no JS, no hiding */
-.evidence-card.evidence-armed:not(.is-visible) {
-  opacity: 0;
-  transform: translateY(var(--evidence-travel));
-}
-
-.evidence-card.is-visible {
-  opacity: 1;
-  transform: none;
-}
-
-/* stagger matches the actual column count */
-@media (min-width: 640px) and (max-width: 959px) {
-  .evidence-card.is-visible:nth-child(even) { transition-delay: 180ms; }
-}
-
-@media (min-width: 960px) {
-  .evidence-card.is-visible:nth-child(3n + 2) { transition-delay: 180ms; }
-  .evidence-card.is-visible:nth-child(3n)     { transition-delay: 360ms; }
-}
-
-.evidence-card__inner {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  padding: var(--space-lg);
-  background-color: var(--surface-card);
-  clip-path: polygon(
-    0 0,
-    calc(100% - var(--evidence-cut)) 0,
-    100% var(--evidence-cut),
-    100% 100%,
-    0 100%
-  );
-}
-
-.evidence-card__inner > .text-body {
-  margin: 0;
-  padding-right: var(--space-xs);
-}
-
-.evidence-card__inner :focus-visible {
-  outline-offset: -4px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .evidence-card,
-  .evidence-card.evidence-armed {
-    opacity: 1;
-    transform: none;
-    transition: none;
-    transition-delay: 0s;
   }
 }
 
@@ -1633,41 +1459,43 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ============================================================
-   Proof Section — Cohere-style split: figure left, accordion right
+   Accordion Section — reusable exclusive-open accordion with an
+   optional paired crossfading figure. Saved from the old proof
+   section; not used by any current section. JS: static/js/accordion.js
    ============================================================ */
-.proof-section {
+.accordion-section {
   padding: var(--space-2xl) 0;
   background-color: var(--bg-off-white);
 }
 
-.proof-split {
+.accordion-split {
   display: flex;
   flex-direction: column;
   gap: var(--space-3xl);
 }
 
 @media (min-width: 768px) {
-  .proof-split {
+  .accordion-split {
     flex-direction: row;
     align-items: center;
     gap: var(--space-4xl);
   }
 
-  .proof-figure,
-  .proof-list {
+  .accordion-figure,
+  .accordion-list {
     flex: 1 1 50%;
     min-width: 0;
   }
 }
 
-.proof-figure {
+.accordion-figure {
   position: relative;
   max-height: 560px;
   aspect-ratio: 1360 / 1500;
   border-radius: var(--radius-lg);
 }
 
-.proof-figure img {
+.accordion-figure img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -1678,31 +1506,31 @@ h1, h2, h3, h4, h5, h6 {
   transition: opacity 700ms ease-in-out;
 }
 
-/* One photo per item, in panel order; js/proof.js moves .is-active.
+/* One photo per item, in panel order; js/accordion.js moves .is-active.
    Without JS the first photo stays up. */
-.proof-figure img:first-child,
-.proof-figure img.is-active {
+.accordion-figure img:first-child,
+.accordion-figure img.is-active {
   opacity: 1;
 }
 
-.proof-list {
+.accordion-list {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.proof-item__panel {
+.accordion-item__panel {
   position: relative;
   padding-top: var(--space-xs);
   border-top: 1px solid var(--border-color);
 }
 
-.proof-list .proof-item:first-child .proof-item__panel {
+.accordion-list .accordion-item:first-child .accordion-item__panel {
   border-top-color: transparent;
 }
 
 /* Open item carries the gradient accent line, in place of its border */
-.proof-item__panel.is-open::before {
+.accordion-item__panel.is-open::before {
   content: "";
   position: absolute;
   top: -1px;
@@ -1716,14 +1544,14 @@ h1, h2, h3, h4, h5, h6 {
   );
 }
 
-.proof-title {
+.accordion-title {
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
   line-height: 1.2;
 }
 
-.proof-toggle {
+.accordion-toggle {
   display: flex;
   width: 100%;
   align-items: center;
@@ -1737,28 +1565,28 @@ h1, h2, h3, h4, h5, h6 {
   cursor: pointer;
 }
 
-.proof-toggle:focus-visible {
+.accordion-toggle:focus-visible {
   outline: 2px solid var(--brand-primary);
   outline-offset: 4px;
   border-radius: var(--radius-sm);
 }
 
-/* Panels animate between explicit px heights set by js/proof.js.
+/* Panels animate between explicit px heights set by js/accordion.js.
    Without JS every panel keeps its natural auto height. */
-.proof-content {
+.accordion-content {
   overflow: hidden;
   transition: height 700ms ease-in-out;
 }
 
-.proof-content__inner {
+.accordion-content__inner {
   padding: 0 0 var(--space-lg);
 }
 
-.proof-content__inner p {
+.accordion-content__inner p {
   color: var(--text-medium);
 }
 
-.proof-points {
+.accordion-points {
   list-style: none;
   display: flex;
   flex-direction: column;
@@ -1767,7 +1595,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0;
 }
 
-.proof-points li {
+.accordion-points li {
   position: relative;
   padding-left: var(--space-md);
   color: var(--text-dark);
@@ -1775,7 +1603,7 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.5;
 }
 
-.proof-points li::before {
+.accordion-points li::before {
   content: "";
   position: absolute;
   left: 0;
@@ -1787,8 +1615,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .proof-content,
-  .proof-figure img {
+  .accordion-content,
+  .accordion-figure img {
     transition: none;
   }
 }
@@ -1796,8 +1624,80 @@ h1, h2, h3, h4, h5, h6 {
 /* Scroll anchoring can latch onto the animating panels and drift the
    viewport down the page while they expand or collapse, so the whole
    section is excluded as an anchor candidate. */
-.proof-section,
-.proof-section * {
+.accordion-section,
+.accordion-section * {
   overflow-anchor: none;
 }
 
+
+/* ============================================================
+   Proof Section — numbered items, same layout as the terms list
+   but with square number badges
+   ============================================================ */
+.proof-section {
+  padding: var(--space-2xl) 0;
+  background-color: var(--bg-off-white);
+}
+
+.proof-list {
+  --proof-num-size: 3.5rem;
+
+  list-style: none;
+  counter-reset: proof;
+  display: block;
+  max-width: 600px;
+  margin-inline: auto;
+}
+
+.proof-list li {
+  counter-increment: proof;
+  display: block;
+  position: relative;
+  margin: 0;
+  padding: var(--space-md) 0 var(--space-lg)
+           calc(var(--proof-num-size) + var(--space-md));
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 0;
+}
+
+/* The number — a square badge, unlike the circular terms badges */
+.proof-list li::before {
+  content: counter(proof);
+  position: absolute;
+  top: var(--space-md);
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--proof-num-size);
+  height: var(--proof-num-size);
+  border-radius: 0;
+  background-color: var(--counter-circle);
+  color: var(--bg-dark-green);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.proof-list strong {
+  display: block;
+  margin-bottom: var(--space-xs);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.proof-list span {
+  color: var(--text-medium);
+}
+
+@media (max-width: 767px) {
+  .proof-list {
+    --proof-num-size: 3rem;
+  }
+
+  .proof-list li::before {
+    font-size: 1.25rem;
+  }
+}

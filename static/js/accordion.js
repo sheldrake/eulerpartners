@@ -1,31 +1,32 @@
-// Euler Partners - proof section accordion.
+// Euler Partners - accordion-section component.
 // Titles stay visible; clicking a title reveals its content and collapses
 // the previously open item. One item is always open (the first by default),
-// and the figure photo crossfades to the one paired with that item.
+// and an optional paired figure crossfades to the photo matching that item.
 // Without this script every item renders expanded in full, as plain content,
-// with the first photo showing.
+// with the first figure photo showing.
+// Not currently used by any section; saved for reuse.
 (function () {
   'use strict';
 
-  var section = document.querySelector('.proof-section');
-  var list = section ? section.querySelector('.proof-list') : null;
+  var section = document.querySelector('.accordion-section');
+  var list = section ? section.querySelector('.accordion-list') : null;
   if (!section || !list) return;
 
   var items = Array.prototype.slice.call(
-    list.querySelectorAll('.proof-item')
+    list.querySelectorAll('.accordion-item')
   );
   if (items.length < 2) return;
 
   var figures = Array.prototype.slice.call(
-    section.querySelectorAll('.proof-figure img')
+    section.querySelectorAll('.accordion-figure img')
   );
 
   var panels = items.map(function (item, i) {
     return {
-      toggle: item.querySelector('.proof-toggle'),
-      panel: item.querySelector('.proof-item__panel'),
-      content: item.querySelector('.proof-content'),
-      inner: item.querySelector('.proof-content__inner'),
+      toggle: item.querySelector('.accordion-toggle'),
+      panel: item.querySelector('.accordion-item__panel'),
+      content: item.querySelector('.accordion-content'),
+      inner: item.querySelector('.accordion-content__inner'),
       figure: figures[i] || null
     };
   }).filter(function (p) {
@@ -69,7 +70,7 @@
     });
   });
 
-  section.classList.add('proof-js');
+  section.classList.add('accordion-js');
   panels.forEach(function (p, i) {
     if (i === 0) open(p);
     else close(p);
