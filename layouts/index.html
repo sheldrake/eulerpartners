@@ -61,13 +61,20 @@
               </div>
             </div>
             <div class="service-deliverables">
-              <p class="service-deliverables-title text-small">Deliverables</p>
-              <ul class="service-deliverables-list">
+              <button class="service-deliverables-toggle" type="button" aria-expanded="false" aria-controls="service-deliverables-list-1">
+                <span class="service-deliverables-title text-small">Deliverables</span>
+                <svg class="service-deliverables-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </button>
+              <div class="service-deliverables-content" id="service-deliverables-list-1">
+                <ul class="service-deliverables-list">
 <li class="text-small">Embedded in your team to design and execute a portfolio of safe-to-fail experiments</li>
 <li class="text-small">Instrument real-time feedback loops</li>
 <li class="text-small">Establish clear criteria for what to scale and what to retire</li>
 <li class="text-small">You finish with your own evidence, not third-party opinion. Your own path, no-one else's. Your own understanding of where you play and how you win.</li>
-              </ul>
+                </ul>
+              </div>
             </div>
           </div>
         </article>
@@ -86,14 +93,21 @@
               </div>
             </div>
             <div class="service-deliverables">
-              <p class="service-deliverables-title text-small">Deliverables</p>
-              <ul class="service-deliverables-list">
+              <button class="service-deliverables-toggle" type="button" aria-expanded="false" aria-controls="service-deliverables-list-2">
+                <span class="service-deliverables-title text-small">Deliverables</span>
+                <svg class="service-deliverables-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </button>
+              <div class="service-deliverables-content" id="service-deliverables-list-2">
+                <ul class="service-deliverables-list">
 <li class="text-small">AI inventory, assessment, and compliance</li>
 <li class="text-small">Governance framework, scorecard and reporting cadence</li>
 <li class="text-small">Decision rights embedded in workflows, where humans sit in agentic loops</li>
 <li class="text-small">Workflow and decision-rights redesign</li>
 <li class="text-small">Implementation design</li>
-              </ul>
+                </ul>
+              </div>
             </div>
           </div>
         </article>
@@ -110,13 +124,20 @@
               </div>
             </div>
             <div class="service-deliverables">
-              <p class="service-deliverables-title text-small">Deliverables</p>
-              <ul class="service-deliverables-list">
+              <button class="service-deliverables-toggle" type="button" aria-expanded="false" aria-controls="service-deliverables-list-3">
+                <span class="service-deliverables-title text-small">Deliverables</span>
+                <svg class="service-deliverables-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </button>
+              <div class="service-deliverables-content" id="service-deliverables-list-3">
+                <ul class="service-deliverables-list">
 <li class="text-small">Executive masterclasses</li>
 <li class="text-small">Strategy architecture coaching</li>
 <li class="text-small">Influence Scorecard</li>
 <li class="text-small">Wardley mapping</li>
-              </ul>
+                </ul>
+              </div>
             </div>
           </div>
         </article>
@@ -133,14 +154,21 @@
               </div>
             </div>
             <div class="service-deliverables">
-              <p class="service-deliverables-title text-small">Deliverables</p>
-              <ul class="service-deliverables-list">
+              <button class="service-deliverables-toggle" type="button" aria-expanded="false" aria-controls="service-deliverables-list-4">
+                <span class="service-deliverables-title text-small">Deliverables</span>
+                <svg class="service-deliverables-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </button>
+              <div class="service-deliverables-content" id="service-deliverables-list-4">
+                <ul class="service-deliverables-list">
 <li class="text-small">Live stakeholder and perspective map, updated as the transformation unfolds, not fixed at kickoff</li>
 <li class="text-small">Dialogue cycles on your most consequential decisions, with AI-assisted synthesis surfacing themes, tensions and minority views across hundreds of voices</li>
 <li class="text-small">Decision ledger, a continuously maintained record of who was heard, evidence used and revisit triggers, with alerts when a trigger is met</li>
 <li class="text-small">Assumption tracking linked to the live signals from Service 1 experiments and the vectors in Service 2</li>
 <li class="text-small">Dialogue capability built in-house: trained facilitators and the tooling to run the practice without us</li>
-              </ul>
+                </ul>
+              </div>
             </div>
           </div>
         </article>
@@ -417,7 +445,7 @@
     </section>
   </main>
 
-  <script src='{{ "js/services.js" | relURL }}' defer></script>
+  <script src='{{ "js/services.js" | relURL }}?v=2' defer></script>
   <script src='{{ "js/proof.js" | relURL }}' defer></script>
 
 {{- end -}}

@@ -7,7 +7,7 @@
 ## Site wiring
 - `assets/css/extended/homepage.css` — homepage styles, bundled automatically by PaperMod.
 - `static/js/header.js` — header listener (show/hide on scroll) and hamburger nav toggle (shows the dropdown on small viewports, styles in `homepage.css` under the `max-width: 768px` block), loaded from `layouts/_partials/header.html`.
-- `static/js/services.js` — services card stack (pinned stage, scroll-driven card travel, dwell before group exit), loaded from `layouts/index.html`. Fallback: per-card `position: sticky` in `homepage.css`.
+- `static/js/services.js` — services card stack (pinned stage, scroll-driven card travel, dwell before group exit), loaded from `layouts/index.html`. Fallback: per-card `position: sticky` in `homepage.css`. Also collapses each card's Deliverables list behind its `.service-deliverables-toggle` button below 768px (expanded by tapping; always expanded on desktop, where the chevron is hidden in `homepage.css`). Without JS all deliverables lists render expanded.
 - `static/js/proof.js` — proof section accordion (exclusive open/close with animated panel height, first item open by default) and crossfade of the paired `.proof-figure` photo, loaded from `layouts/index.html`. Without JS all proof panels render expanded and the first photo shows.
 
 # General info

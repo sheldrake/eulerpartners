@@ -122,3 +122,80 @@
 
   setup();
 })();
+
+// Euler Partners - service card deliverables disclosure.
+// Below 768px each card's Deliverables list starts collapsed behind its
+// title button; tapping expands it in place. On desktop the lists are
+// always expanded and the chevron is hidden. Without this script every
+// list renders expanded in full, as plain content.
+(function () {
+  'use strict';
+
+  var toggles = Array.prototype.slice.call(
+    document.querySelectorAll('.service-deliverables-toggle')
+  );
+
+  var panels = toggles
+    .map(function (toggle) {
+      return {
+        toggle: toggle,
+        content: document.getElementById(
+          toggle.getAttribute('aria-controls')
+        )
+      };
+    })
+    .filter(function (p) {
+      return p.content;
+    });
+  if (!panels.length) return;
+
+  var desktop = window.matchMedia('(min-width: 768px)');
+
+  function isOpen(p) {
+    return p.toggle.getAttribute('aria-expanded') === 'true';
+  }
+
+  function open(p) {
+    p.toggle.setAttribute('aria-expanded', 'true');
+    p.content.style.height = p.content.scrollHeight + 'px';
+  }
+
+  function close(p) {
+    p.toggle.setAttribute('aria-expanded', 'false');
+    p.content.style.height = '0px';
+  }
+
+  function settle() {
+    // Keep the open panel's explicit height in step after font/image load
+    // or viewport changes; collapsed panels stay at 0.
+    if (desktop.matches) return;
+    panels.forEach(function (p) {
+      if (isOpen(p)) open(p);
+    });
+  }
+
+  function applyMode() {
+    if (desktop.matches) {
+      panels.forEach(function (p) {
+        p.toggle.setAttribute('aria-expanded', 'true');
+        p.content.style.height = '';
+      });
+    } else {
+      panels.forEach(close);
+    }
+  }
+
+  panels.forEach(function (p) {
+    p.toggle.addEventListener('click', function () {
+      if (desktop.matches) return;
+      if (isOpen(p)) close(p);
+      else open(p);
+    });
+  });
+
+  desktop.addEventListener('change', applyMode);
+  window.addEventListener('resize', settle);
+  window.addEventListener('load', settle);
+
+  applyMode();
+})();

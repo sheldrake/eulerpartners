@@ -665,17 +665,72 @@ h1, h2, h3, h4, h5, h6 {
     position: relative;
     z-index: 5;
   }
+
+  .service-deliverables-toggle {
+    cursor: default;
+  }
+
+  .service-deliverables-chevron {
+    display: none;
+  }
+}
+
+/* Deliverables disclosure: the title is a button; js/services.js collapses
+   the list behind it on small viewports, desktop keeps it always expanded. */
+.service-deliverables-toggle {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  border: none;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: var(--space-lg);
+}
+
+.service-deliverables-toggle:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
 }
 
 .service-deliverables-title {
   display: inline-block;
-  align-self: flex-start;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   padding: var(--space-xs) var(--space-md);
   border-radius: var(--radius-sm);
-  margin-bottom: var(--space-lg);
+}
+
+.service-deliverables-chevron {
+  width: 1.25em;
+  height: 1.25em;
+  flex-shrink: 0;
+  transition: transform 300ms ease;
+}
+
+.service-deliverables-toggle[aria-expanded='true'] .service-deliverables-chevron {
+  transform: rotate(180deg);
+}
+
+/* Panels animate between explicit px heights set by js/services.js.
+   Without JS the list keeps its natural auto height. */
+.service-deliverables-content {
+  overflow: hidden;
+  transition: height 400ms ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .service-deliverables-content,
+  .service-deliverables-chevron {
+    transition: none;
+  }
 }
 
 .service-deliverables-list {
@@ -830,19 +885,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .service-card-4 {
   background-color: var(--brand-alt2);
-  color: var(--brand-dark);
-}
-
-.service-card-4 .service-eyebrow {
-  color: oklch(from var(--brand-alt2) calc(l - 0.8) c h);
-}
-
-.service-card-4 h3 {
-  color: var(--text-dark);
-}
-
-.service-card-4 .service-description {
-  color: oklch(from var(--brand-alt2) calc(l - 0.8) c h);
+  color: var(--text-pure-white);
 }
 
 .service-card-4 .service-eyebrow {
