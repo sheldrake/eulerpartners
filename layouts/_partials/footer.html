@@ -6,7 +6,6 @@
         {{- else }}
         <span>&copy; {{ now.Year }} <a href="{{ "" | absLangURL }}">{{ site.Title }}</a></span>
         {{- end }}
-        {{- print " · "}}
     {{- end }}
 
     {{- with site.Params.footer.text }}
@@ -21,15 +20,13 @@
         - Support us by sponsoring the project on GitHub Sponsors: https://github.com/sponsors/adityatelange
     */}}
 
-    <span>
+    <span><br />
         With thanks to
         <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a>,
         <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>,
-        <a href="https://github.com/" rel="noopener" target="_blank">GitHub</a>,
+        <a href="https://github.com/" rel="noopener" target="_blank">GitHub</a>,<br />
         <a href="https://cloudflare.com/" rel="noopener" target="_blank">Cloudflare</a>,
         <a href="https://mistral.ai/solutions/coding/" rel="noopener" target="_blank">Mistral Code</a>, and <a href="https://deepseek.com" rel="noopener" target="_blank">DeepSeek</a>.
-
-
     </span>
 </footer>
 {{- end }}
