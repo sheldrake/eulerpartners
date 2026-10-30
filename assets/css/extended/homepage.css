@@ -609,6 +609,617 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
   z-index: 15;
 }
+/* Euler Partners Homepage Styles */
+/* Inspired by cohere.com: clean, trustworthy, good typography, white space */
+
+/* ===== CSS Variables ===== */
+:root {
+  /* Brand colors */
+  --brand-primary: #7ba696;
+  --brand-dark: #2d3748;
+  --brand-alt: #eda27c;
+  --brand-alt2: #845969; /* #7ca2ed #8db3fe */
+  --brand-alt3: #0b4032;
+
+  /* Colors */
+  --bg-off-white: #f0eee9;
+  --bg-dark-green: #062c22;
+  --bg-black: #000000;
+  --bg-white: #ffffff;
+  --border-color: #d7cfc1;
+
+  /* Neutral palette */
+  --text-dark: #1a202c;
+  --text-medium: #4a5568;
+  --text-light: #718096;
+  --text-pure-white: #ffffff;
+
+  /* Surfaces & shadows */
+  --surface-card: color-mix(in oklch, var(--brand-primary) 50%, var(--bg-white));
+  --counter-circle: #7ba696;
+  --shadow-card: 0 2px 6px rgb(0 0 0 / 0.10);
+  --shadow-card-lift: 0 4px 14px rgb(0 0 0 / 0.12);
+
+  /* Typography */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-serif: Georgia, 'Times New Roman', serif;
+
+  /* Spacing */
+  --space-xs: 0.4rem;
+  --space-sm: 0.8rem;
+  --space-md: 1.2rem;
+  --space-lg: 1.8rem;
+  --space-xl: 2.8rem;
+  --space-2xl: 3.5rem;
+  --space-3xl: 5rem;
+  --space-4xl: 7rem;
+  --space-5xl: 9rem;
+
+  /* Layout */
+  --max-width: 1200px;
+  --container-padding: 0 1rem;
+  --header-height: 64px;
+  /* Full-bleed up to the site measure, then held at --max-width */
+  --card-width: min(95vw, var(--max-width));
+  --card-stack-offset: 70px;
+
+  /* Scroll distance the fully seated card stack holds still before
+     leaving the viewport as one unit (driven by js/services.js) */
+  --stack-dwell: 120px;
+
+  /* Transitions */
+  --transition: all 0.5s ease;
+  --transition-slow: all 2s ease;
+
+  /* Border radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-full: 9999px;
+
+  /* Card dimensions */
+  --card-min-height: 450px;
+  --card-image-height: 480px;
+  --card-image-max-width: 620px;
+}
+
+/* ===== Reset & Base ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-dark);
+  background-color: var(--bg-off-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+/* ===== Typography ===== */
+body, h1, h2, h3, h4, h5, h6, p, span, a, div {
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--text-dark);
+}
+
+/* Cohere typography scale */
+.text-small-eyebrow {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.text-small {
+  font-size: 0.875rem;
+}
+
+.text-body {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.text-lead {
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.text-subheading {
+  font-size: 1.25rem;
+}
+
+.text-heading-sm {
+  font-size: 1.3rem;
+}
+
+.text-heading-md {
+  font-size: clamp(1.3rem, 4vw, 2.2rem);
+  line-height: 1.2;
+}
+
+.text-heading-lg {
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  line-height: 1.2;
+}
+
+.text-display-sm {
+  font-size: clamp(2.5rem, 6vw, 3rem);
+  line-height: 1.1;
+}
+
+.text-display-lg {
+  font-size: clamp(2.75rem, 7vw, 3.5rem);
+  line-height: 1.1;
+}
+
+.font-body {
+  font-family: var(--font-sans);
+}
+
+.font-eyebrow {
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ===== Layout ===== */
+.main {
+  position: relative;
+  width: 100%;
+  max-width: none;
+  min-height: calc(
+    100vh - var(--header-height) - var(--footer-height)
+  );
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--container-padding);
+}
+
+/* ===== Header - Cohere Style ===== */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  height: var(--header-height);
+  background-color: var(--bg-white);
+  border-bottom: 1px solid #e2e8f0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.header.hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+.header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+.logo {
+  height: 36px;
+}
+
+.nav {
+  display: flex;
+  gap: var(--space-lg);
+}
+
+.nav a {
+  font-weight: 500;
+  font-size: 0.9375rem;
+  color: var(--text-dark);
+}
+
+.nav a:hover {
+  color: var(--brand-primary);
+}
+
+/* Hamburger toggle - hidden on desktop, shown on small viewports (below) */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.nav-toggle-line {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: var(--text-dark);
+  border-radius: 1px;
+  transition: transform 0.25s ease;
+}
+
+/* ===== Spacer for fixed header ===== */
+.header-spacer {
+  height: var(--header-height);
+  background-color: var(--bg-off-white);
+}
+
+/* ===== Hero Intro ===== */
+.hero-intro {
+  padding: var(--space-5xl) 0 var(--space-3xl) 0;
+  background-color: var(--bg-off-white);
+}
+
+/* Half the old hero-to-title whitespace (was space-5xl + space-3xl,
+   now space-2xl + space-2xl either side of the join) */
+.section-title {
+  padding: var(--space-2xl) 0 var(--space-lg) 0;
+  background-color: var(--bg-off-white);
+}
+
+/* Match the services card column exactly, so the heading sits on the
+   same left edge as the cards below it */
+.section-title .container {
+  max-width: var(--card-width);
+  padding: 0;
+}
+
+/* Section title rule — the same line used before "Euler Partners" in
+   the hero-intro eyebrow, here sitting above the heading */
+.section-title h2,
+.proof-section h2,
+.partners-section h2 {
+  position: relative;
+  padding-top: var(--space-sm);
+}
+
+.section-title h2::before,
+.proof-section h2::before,
+.partners-section h2::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3rem;
+  height: 2px;
+  background-color: currentColor;
+}
+
+.hero-intro .container {
+  max-width: 700px;
+}
+
+.hero-intro h1 {
+  font-size: clamp(2.5rem, 10vw, 5rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-md);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.hero-subtitle {
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  color: var(--text-medium);
+  line-height: 1.6;
+  max-width: 60ch;
+}
+
+/* ===== Campaign Section ===== */
+.hero {
+  padding: var(--space-3xl) 0 var(--space-2xl);
+  background-color: var(--bg-off-white);
+}
+
+/* Same measure as the hero-intro column, so the copy aligns with it */
+.hero .container {
+  max-width: 700px;
+}
+
+.hero-questions {
+  font-size: clamp(1.4rem, 5vw, 3rem);
+  line-height: 1.1;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: var(--space-lg);
+}
+
+.hero-questions span {
+  display: block;
+}
+
+.hero-p {
+  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+  line-height: 1.7;
+  margin-bottom: var(--space-lg);
+  max-width: 50ch;
+  color: var(--text-dark);
+}
+
+/* ===== CTA Button ===== */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--text-pure-white);
+  color: var(--brand-primary);
+  font-weight: 500;
+  border-radius: var(--radius-full);
+  border: 2px solid transparent;
+  transition: var(--transition-slow);
+  cursor: pointer;
+}
+
+.cta:hover {
+  background-color: transparent;
+  border-color: var(--text-pure-white);
+  color: var(--text-pure-white);
+}
+
+.cta-dark {
+  background-color: var(--text-dark);
+  color: var(--text-pure-white);
+  border: 2px solid var(--text-dark);
+}
+
+.cta-dark:hover {
+  background-color: transparent;
+  border-color: var(--text-dark);
+  color: var(--text-dark);
+}
+
+.cta:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(123, 166, 150, 0.3), 0 0 0 4px rgba(123, 166, 150, 0.2);
+}
+
+.cta-icon {
+  width: 1em;
+  height: 1em;
+}
+
+.cta-row {
+  margin-top: var(--space-lg);
+}
+
+/* ===== Services Section - Cohere Stacking Card Style ===== */
+@media (min-width: 768px) {
+  .section {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    padding: 0;
+    background-color: var(--bg-off-white);
+    position: relative;
+  }
+
+.services-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0 auto;
+  width: 100%;
+   }
+}
+
+/* Stacking product card */
+.service-card-cohere {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid transparent;
+  padding: var(--space-md) var(--space-lg);
+  width: var(--card-width);
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.service-flex-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: var(--space-5xl);
+  margin-bottom: 3rem;
+}
+
+.services-section {
+  padding: var(--space-lg) 0 var(--space-3xl) 0 ;
+  background-color: var(--bg-off-white);
+  position: relative;
+}
+
+.services-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .services-section {
+    padding: var(--space-lg) 0 var(--space-3xl) 0 ;
+}
+  }
+
+  .services-container {
+    width: var(--card-width);
+    max-width: none;
+    margin: 0;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .service-flex-wrapper {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: var(--space-lg);
+    /* With the eyebrow's margin-bottom this totals 2.1rem. Flex children
+       do not collapse margins. */
+    margin-top: 0.7rem;
+  }
+
+  /* The eyebrow owns the top strip of the card, one overlap gap tall, so it stays visible when the next card stacks over this one. Flex centering keeps it vertically centred at one or two lines. */
+  .service-eyebrow {
+    height: auto;
+    margin: calc(var(--card-stack-offset)/3) 0 calc(var(--card-stack-offset)/6) 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .service-text-wrapper {
+    flex: 0 1 50%;
+  }
+
+  .service-deliverables {
+    flex: 0 1 50%;
+  }
+
+  .service-card-1,
+  .service-card-2,
+  .service-card-3,
+  .service-card-4 {
+    position: sticky;
+    width: 100%;
+    min-height: var(--card-min-height);
+    border-radius: var(--radius-xl);
+    padding: 0 5.3125rem 2rem 3.125rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    justify-content: flex-start;
+  }
+
+  .service-card-1 {
+    top: 40px;
+    z-index: 1;
+  }
+
+  .service-card-2 {
+    top: calc(40px + var(--card-stack-offset));
+    z-index: 2;
+  }
+
+  .service-card-3 {
+    top: calc(40px + var(--card-stack-offset) * 2);
+    z-index: 3;
+  }
+
+  .service-card-4 {
+    top: calc(40px + var(--card-stack-offset) * 3);
+    z-index: 4;
+  }
+
+  /* JS-driven stacking (js/services.js adds .stack-js on desktop):
+     the stage pins, cards travel to their seats inside it, hold for
+     --stack-dwell, then the whole stage leaves with the page scroll.
+     Without JS the sticky rules above remain as the fallback. */
+  .services-section.stack-js .services-stage {
+    position: sticky;
+    top: 40px;
+  }
+
+  .services-section.stack-js .service-card-1,
+  .services-section.stack-js .service-card-2,
+  .services-section.stack-js .service-card-3,
+  .services-section.stack-js .service-card-4 {
+    position: absolute;
+    left: 0;
+    right: 0;
+    will-change: transform;
+  }
+
+  .services-section.stack-js .service-card-1 {
+    top: 0;
+    z-index: 1;
+  }
+
+  .services-section.stack-js .service-card-2 {
+    top: var(--card-stack-offset);
+    z-index: 2;
+  }
+
+  .services-section.stack-js .service-card-3 {
+    top: calc(var(--card-stack-offset) * 2);
+    z-index: 3;
+  }
+
+  .services-section.stack-js .service-card-4 {
+    top: calc(var(--card-stack-offset) * 3);
+    z-index: 4;
+  }
+
+/* Left text container - Cohere style */
+.service-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  max-width: 100%;
+  position: relative;
+  z-index: 10;
+}
+
+.service-text-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 100%;
+}
+
+.service-eyebrow {
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+    margin: calc(var(--card-stack-offset)/3) 0 calc(var(--card-stack-offset)/6) 0;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.service-card-cohere h3 {
+  line-height: 1.1;
+  margin-bottom: var(--space-md);
+  font-weight: 600;
+  position: relative;
+  z-index: 15;
+}
 
 .service-description {
   /* max-width: 440px; */
@@ -1567,77 +2178,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
-/* ============================================================
-   Proof Section — numbered items, same layout as the terms list
-   but with square number badges
-   ============================================================ */
-.proof-section {
-  padding: var(--space-2xl) 0;
-  background-color: var(--bg-off-white);
-}
-
-.proof-list {
-  --proof-num-size: 3.5rem;
-
-  list-style: none;
-  counter-reset: proof;
-  display: block;
-  max-width: 600px;
-  margin-inline: auto;
-}
-
-.proof-list li {
-  counter-increment: proof;
-  display: block;
-  position: relative;
-  margin: 0;
-  padding: var(--space-md) 0 var(--space-lg)
-           calc(var(--proof-num-size) + var(--space-md));
-  border-top: 1px solid #e2e8f0;
-  border-bottom: 0;
-}
-
-/* The number — a square badge, unlike the circular terms badges */
-.proof-list li::before {
-  content: counter(proof);
-  position: absolute;
-  top: var(--space-md);
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--proof-num-size);
-  height: var(--proof-num-size);
-  border-radius: 0;
-  background-color: var(--counter-circle);
-  color: var(--bg-dark-green);
-  font-size: 1.5rem;
-  font-weight: 600;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
-
-.proof-list strong {
-  display: block;
-  margin-bottom: var(--space-xs);
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--text-dark);
-}
-
-.proof-list span {
-  color: var(--text-medium);
-}
-
-@media (max-width: 767px) {
-  .proof-list {
-    --proof-num-size: 3rem;
-  }
-
-  .proof-list li::before {
-    font-size: 1.25rem;
-  }
-}
 
 /* ---------- Hero shell annimation ---------- */
 .hero-intro {
@@ -1742,4 +2282,1148 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (prefers-reduced-motion: reduce) {
   #hero-organism { display: none; }
+}
+
+.service-description {
+  /* max-width: 440px; */
+  margin-bottom: var(--space-sm);
+  line-height: 1.3;
+  position: relative;
+  z-index: 12;
+}
+
+/* Service deliverables box - replaces the card image */
+.service-deliverables {
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .service-deliverables {
+    /* min-height: var(--card-image-height); */
+    align-self: flex-start;
+    max-width: var(--card-image-max-width);
+    position: relative;
+    z-index: 5;
+  }
+
+  .service-deliverables-toggle {
+    cursor: default;
+  }
+
+  .service-deliverables-chevron {
+    display: none;
+  }
+}
+
+/* Deliverables disclosure: the title is a button; js/services.js collapses
+   the list behind it on small viewports, desktop keeps it always expanded. */
+.service-deliverables-toggle {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  border: none;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: var(--space-lg);
+}
+
+.service-deliverables-toggle:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+
+.service-deliverables-title {
+  display: inline-block;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-sm);
+}
+
+.service-deliverables-chevron {
+  width: 1.25em;
+  height: 1.25em;
+  flex-shrink: 0;
+  transition: transform 300ms ease;
+}
+
+.service-deliverables-toggle[aria-expanded='true'] .service-deliverables-chevron {
+  transform: rotate(180deg);
+}
+
+/* Panels animate between explicit px heights set by js/services.js.
+   Without JS the list keeps its natural auto height. */
+.service-deliverables-content {
+  overflow: hidden;
+  transition: height 400ms ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .service-deliverables-content,
+  .service-deliverables-chevron {
+    transition: none;
+  }
+}
+
+.service-deliverables-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.service-deliverables-list li {
+  font-weight: 600;
+  line-height: 1.3;
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+}
+
+.service-deliverables-list li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* Individual card colors */
+.service-card-1 {
+  background-color: var(--brand-alt3);
+  color: var(--text-pure-white);
+}
+
+.service-card-1 .service-eyebrow {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.service-card-1 h3 {
+  color: var(--text-pure-white);
+}
+
+.service-card-1 .service-description {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.service-card-1 .cta {
+  background-color: var(--text-pure-white);
+  color: var(--brand-primary);
+  border-color: transparent;
+}
+
+.service-card-1 .cta:hover {
+  background-color: transparent;
+  border-color: var(--text-pure-white);
+  color: var(--text-pure-white);
+}
+
+.service-card-1 .service-deliverables {
+  background-color: oklch(from var(--brand-alt3) calc(l - 0.05) c h);
+}
+
+.service-card-1 .service-deliverables-title {
+  background-color: var(--bg-off-white);
+  color: var(--bg-dark-green);
+}
+
+.service-card-1 .service-deliverables-list li {
+  color: rgba(255, 255, 255, 0.85);
+  border-bottom-color: rgba(255, 255, 255, 0.15);
+}
+
+.service-card-2 {
+  background-color: var(--brand-alt);
+  color: var(--brand-dark);
+}
+
+.service-card-2 .service-eyebrow {
+  color: oklch(from var(--brand-alt) calc(l - 0.8) c h);
+}
+
+.service-card-2 h3 {
+  color: var(--text-dark);
+}
+
+.service-card-2 .service-description {
+  color: oklch(from var(--brand-alt) calc(l - 0.8) c h);
+}
+
+.service-card-2 .cta {
+  background-color: var(--text-pure-white);
+  color: var(--bg-black);
+  border-color: transparent;
+}
+
+.service-card-2 .cta:hover {
+  background-color: transparent;
+  border-color: var(--text-pure-white);
+  color: var(--text-pure-white);
+}
+
+.service-card-2 .service-deliverables {
+  background-color: oklch(from var(--brand-alt) calc(l - 0.1) c h);
+}
+
+.service-card-2 .service-deliverables-title {
+  background-color: var(--bg-off-white);
+  color: var(--bg-black);
+}
+
+.service-card-2 .service-deliverables-list li {
+  color: var(--brand-dark);
+  border-bottom-color: rgba(255, 255, 255, 0.15);
+}
+
+.service-card-3 {
+  background-color: var(--bg-white);
+  color: var(--text-dark);
+  border-color: var(--border-color);
+}
+
+.service-card-3 .service-eyebrow {
+  color: var(--brand-primary);
+}
+
+.service-card-3 h3 {
+  color: var(--text-dark);
+}
+
+.service-card-3 .service-description {
+  color: var(--text-medium);
+}
+
+.service-card-3 .cta {
+  background-color: var(--text-dark);
+  color: var(--text-pure-white);
+  border-color: var(--text-dark);
+}
+
+.service-card-3 .cta:hover {
+  background-color: transparent;
+  border-color: var(--text-dark);
+  color: var(--text-dark);
+}
+
+.service-card-3 .service-deliverables {
+  background-color: var(--bg-off-white);
+}
+
+.service-card-3 .service-deliverables-title {
+  background-color: var(--text-dark);
+  color: var(--text-pure-white);
+}
+
+.service-card-3 .service-deliverables-list li {
+  color: var(--text-medium);
+  border-bottom-color: var(--border-color);
+}
+
+.service-card-4 {
+  background-color: var(--brand-alt2);
+  color: var(--text-pure-white);
+}
+
+.service-card-4 .service-eyebrow {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.service-card-4 h3 {
+  color: var(--text-pure-white);
+}
+
+.service-card-4 .service-description {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.service-card-4 .cta {
+  background-color: var(--text-pure-white);
+  color: var(--brand-primary);
+  border-color: transparent;
+}
+
+.service-card-4 .cta:hover {
+  background-color: transparent;
+  border-color: var(--text-pure-white);
+  color: var(--text-pure-white);
+}
+
+.service-card-4 .service-deliverables {
+  background-color: oklch(from var(--brand-alt2) calc(l - 0.05) c h);
+}
+
+.service-card-4 .service-deliverables-title {
+  background-color: var(--bg-off-white);
+  color: var(--bg-dark-green);
+}
+
+.service-card-4 .service-deliverables-list li {
+  color: rgba(255, 255, 255, 0.85);
+  border-bottom-color: rgba(255, 255, 255, 0.15);
+}
+
+
+/* Stacking spacer to create the scroll effect */
+.service-stack-spacer {
+  height: var(--card-min-height);
+  width: 100%;
+}
+
+/* ===== How We Work Section ===== */
+.terms-section {
+  padding: var(--space-xl) 0;
+  background-color: var(--bg-off-white);
+}
+
+.terms-section .container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--container-padding);
+}
+
+.section-header {
+  margin-bottom: var(--space-lg);
+}
+
+.eyebrow {
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--brand-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.terms-section h2 {
+  line-height: 1.2;
+  margin-bottom: var(--space-lg);
+  color: var(--text-dark);
+}
+
+.terms-list {
+  list-style: none;
+}
+
+.terms-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.terms-list li:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.terms-list strong {
+  display: block;
+  margin-bottom: var(--space-xs);
+  color: var(--text-dark);
+}
+
+.terms-list span {
+  color: var(--text-medium);
+}
+
+/* ===== Contact Section ===== */
+.contact-section {
+  padding: var(--space-xl) 0;
+  background-color: var(--bg-off-white);
+}
+
+.contact-section .container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--container-padding);
+}
+
+.contact-section h2 {
+  line-height: 1.2;
+  margin-bottom: var(--space-lg);
+  color: var(--text-dark);
+}
+
+.contact-info {
+  max-width: 50ch;
+}
+
+.contact-info p {
+  line-height: 1.8;
+  color: var(--text-dark);
+}
+
+.contact-info strong {
+  color: var(--text-dark);
+}
+
+.contact-info a {
+  color: var(--brand-primary);
+}
+
+.contact-info a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Footer =====
+.footer {
+  padding: var(--space-xl) 0;
+  border-top: 1px solid #e2e8f0;
+  background-color: var(--bg-off-white);
+}
+
+.footer .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer p {
+  color: var(--text-light);
+  margin: 0;
+}
+*/
+/* ============================================================
+   Footer — dark green, full width, centred
+   ============================================================ */
+.footer {
+  max-width: none;   /* ← override PaperMod */
+  width: 100%;
+  padding: var(--space-2xl) 0;
+  background-color: var(--bg-dark-green);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.footer .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--space-sm);
+}
+
+.footer p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.875rem;
+}
+
+.footer a {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  transition: var(--transition);
+}
+
+.footer a:hover {
+  color: var(--text-pure-white);
+  border-bottom-color: rgba(255, 255, 255, 0.7);
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 768px) {
+  :root {
+    --header-height: 56px;
+    --card-width: 95%;
+  }
+
+  .header {
+    height: var(--header-height);
+  }
+
+  .header-spacer {
+    height: var(--header-height);
+  }
+
+  .header .container {
+    flex-direction: row;
+  }
+
+  .nav {
+    gap: var(--space-md);
+  }
+
+  /* Hamburger menu: toggle appears, links drop down under the header */
+  .js .nav-toggle {
+    display: inline-flex;
+  }
+
+  .js .nav-toggle[aria-expanded="true"] .nav-toggle-line:first-child {
+    transform: translateY(3.5px) rotate(45deg);
+  }
+
+  .js .nav-toggle[aria-expanded="true"] .nav-toggle-line:last-child {
+    transform: translateY(-3.5px) rotate(-45deg);
+  }
+
+  .js .nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    padding: var(--space-xs) var(--space-md) var(--space-md);
+    background-color: var(--bg-white);
+    border-bottom: 1px solid #e2e8f0;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+  }
+
+  .js .nav.nav-open {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .js .nav a {
+    padding: var(--space-sm) 0;
+    font-size: 1.0625rem;
+  }
+
+  .hero-intro {
+    padding: var(--space-5xl) 0 var(--space-3xl) 0;
+  }
+
+  .pin-spacer {
+    height: auto;
+  }
+
+  .service-card-cohere {
+    flex-direction: column;
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    position: relative;
+    top: auto;
+    min-height: auto;
+    margin-bottom: var(--space-md);
+    width: 100%;
+  }
+
+  .service-flex-wrapper {
+    flex-direction: column;
+  }
+
+  .service-deliverables {
+    min-height: auto;
+    max-width: 100%;
+  }
+
+  .services-section {
+    padding: var(--space-lg) 0;
+  }
+
+  .terms-section,
+  .contact-section {
+    padding: var(--space-lg) 0;
+  }
+
+  .footer .container {
+    flex-direction: column;
+    gap: var(--space-md);
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: var(--container-padding);
+  }
+
+  .nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hero-subtitle {
+    font-size: 1.125rem;
+  }
+
+  .hero-p {
+    font-size: 1.25rem;
+  }
+
+  .service-card-cohere {
+    padding: var(--space-sm);
+  }
+}
+
+/* ===== Print Styles ===== */
+@media print {
+  .header, .header-spacer, .nav, .cta {
+    display: none;
+  }
+
+  body {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .hero-intro, .section-title {
+    padding: var(--space-lg) 0;
+  }
+
+  .service-card-cohere {
+    position: relative;
+    top: auto;
+    margin-bottom: var(--space-md);
+  }
+
+  .section {
+    page-break-inside: avoid;
+  }
+}
+
+
+
+/* ============================================================
+   How We Work — numbered principles, grid-filled down columns
+   ============================================================ */
+.terms-section {
+  padding: var(--space-2xl) 0;
+}
+
+.terms-list {
+  --principle-num-size: 3.5rem;
+  list-style: none;
+  counter-reset: principle;
+  display: block;
+  max-width: 600px;
+  margin-inline: auto;
+}
+
+.terms-list li {
+  counter-increment: principle;
+  display: block;
+  position: relative;
+  margin: 0;
+  padding: var(--space-md) 0 var(--space-lg)
+           calc(var(--principle-num-size) + var(--space-md));
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 0;
+}
+
+/* The big number — absolutely placed so text always starts at the top */
+.terms-list li::before {
+  content: counter(principle);
+  position: absolute;
+  top: var(--space-md);
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--principle-num-size);
+  height: var(--principle-num-size);
+  border-radius: var(--radius-full);
+  background-color: var(--counter-circle);
+  color: var(--bg-dark-green);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.terms-list strong {
+  display: block;
+  margin-bottom: var(--space-xs);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.terms-list span {
+  color: var(--text-medium);
+}
+
+@media (max-width: 767px) {
+  .terms-list {
+    --principle-num-size: 3rem;
+  }
+
+  .terms-list li::before {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .terms-section,
+  .proof-section {
+    padding: var(--space-lg) 0;
+  }
+}
+
+/* ===== Partners Section ===== */
+.partners-section {
+  padding: var(--space-xl) 0;
+  background-color: var(--bg-off-white);
+}
+
+.partner-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+}
+
+@media (min-width: 768px) {
+  .partner-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.partner-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background-color: var(--bg-white);
+  border-radius: var(--radius-lg);
+  border: 1px solid transparent;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.1);
+  box-sizing: border-box;
+}
+
+.partner-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.partner-card__intro {
+  flex: 1 1 auto;
+  min-width: 0; /* long words wrap instead of pushing the image */
+}
+
+.partner-card__name {
+  margin: 0 0 var(--space-xs);
+}
+
+.partner-card__role {
+  margin: 0;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+}
+
+.partner-card__headshot {
+  flex: 0 0 auto;
+  width: 120px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius-sm); /* drop to 0 if service cards are sharp */
+}
+
+/* two cards at 768px are ~350px wide — 120px headshot crowds the text */
+@media (max-width: 959px) {
+  .partner-card__headshot { width: 80px; }
+}
+
+.partner-card__bio {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.partner-card__bio > .text-body { margin: 0; }
+
+.partner-card__socials {
+  display: flex;
+  gap: var(--space-xs);
+  margin: auto 0 0; /* pins to bottom; equal height comes from grid stretch */
+  padding: 0;
+  list-style: none;
+}
+
+.partner-card__socials a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: var(--text-medium);
+  border-radius: var(--radius-full);
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.partner-card__socials a:hover,
+.partner-card__socials a:focus-visible {
+  color: var(--brand-dark);
+  background-color: var(--bg-off-white);
+}
+
+.partner-card__socials svg {
+  width: 30px;
+  height: 30px;
+  fill: currentColor;
+}
+
+/* ============================================================
+   Accordion Section — reusable exclusive-open accordion with an
+   optional paired crossfading figure. Saved from the old proof
+   section; not used by any current section. JS: static/js/accordion.js
+   ============================================================ */
+.accordion-section {
+  padding: var(--space-2xl) 0;
+  background-color: var(--bg-off-white);
+}
+
+.accordion-split {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xl);
+}
+
+@media (min-width: 768px) {
+  .accordion-split {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-4xl);
+  }
+
+  .accordion-figure,
+  .accordion-list {
+    flex: 1 1 50%;
+    min-width: 0;
+  }
+}
+
+.accordion-figure {
+  position: relative;
+  max-height: 560px;
+  aspect-ratio: 1360 / 1500;
+  border-radius: var(--radius-lg);
+}
+
+.accordion-figure img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  opacity: 0;
+  transition: opacity 700ms ease-in-out;
+}
+
+/* One photo per item, in panel order; js/accordion.js moves .is-active.
+   Without JS the first photo stays up. */
+.accordion-figure img:first-child,
+.accordion-figure img.is-active {
+  opacity: 1;
+}
+
+.accordion-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.accordion-item__panel {
+  position: relative;
+  padding-top: var(--space-xs);
+  border-top: 1px solid var(--border-color);
+}
+
+.accordion-list .accordion-item:first-child .accordion-item__panel {
+  border-top-color: transparent;
+}
+
+/* Open item carries the gradient accent line, in place of its border */
+.accordion-item__panel.is-open::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    var(--brand-primary),
+    var(--brand-alt)
+  );
+}
+
+.accordion-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.accordion-toggle {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) 0;
+  border: none;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.accordion-toggle:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+
+/* Panels animate between explicit px heights set by js/accordion.js.
+   Without JS every panel keeps its natural auto height. */
+.accordion-content {
+  overflow: hidden;
+  transition: height 700ms ease-in-out;
+}
+
+.accordion-content__inner {
+  padding: 0 0 var(--space-lg);
+}
+
+.accordion-content__inner p {
+  color: var(--text-medium);
+}
+
+.accordion-points {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin: var(--space-md) 0 var(--space-sm);
+  padding: 0;
+}
+
+.accordion-points li {
+  position: relative;
+  padding-left: var(--space-md);
+  color: var(--text-dark);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.accordion-points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.45em;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: var(--radius-full);
+  background-color: var(--brand-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accordion-content,
+  .accordion-figure img {
+    transition: none;
+  }
+}
+
+/* Scroll anchoring can latch onto the animating panels and drift the
+   viewport down the page while they expand or collapse, so the whole
+   section is excluded as an anchor candidate. */
+.accordion-section,
+.accordion-section * {
+  overflow-anchor: none;
+}
+
+
+
+/* ---------- Hero shell annimation ---------- */
+.hero-intro {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* Always dark — the rest of the page is light-only, so the hero
+     stays a fixed dark shell rather than following any theme */
+  background: var(--bg-dark-green);
+  color: var(--text-pure-white);
+}
+
+.hero-intro__visual {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* soften top/bottom so the field doesn't collide with nav or next section */
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
+}
+
+#hero-organism {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Content */
+.hero-intro .container {
+  position: relative;
+  z-index: 1;
+  padding-block: clamp(3.5rem, 11vh, 7rem);
+}
+
+/* Eyebrow sits on the dark shell: same colour as the subtitle, not brand green.
+   A single rule line replaces any dash characters. */
+.hero-intro .eyebrow {
+  color: rgb(255 255 255 / 0.72);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.hero-intro .eyebrow::before {
+  content: "";
+  width: 3rem;
+  height: 2px;
+  background-color: currentColor;
+}
+
+.hero-intro h1 {
+  margin: 0;
+  font-size: clamp(2.25rem, 5.5vw, 3.75rem);
+  line-height: 1.06;
+  letter-spacing: -0.022em;
+  font-weight: 700;
+  color: var(--text-pure-white);
+}
+
+.hero-subtitle {
+  margin: 1.35rem 0 0;
+  max-width: 52ch;
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  line-height: 1.6;
+  color: rgb(255 255 255 / 0.72);
+}
+
+/* Single CTA */
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 2.1rem;
+  padding: 0.85rem 1.5rem;
+  border-radius: var(--radius, 8px);
+  background: var(--text-pure-white);
+  color: var(--bg-dark-green);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.18s ease, opacity 0.18s ease;
+}
+
+.hero-cta:hover {
+  transform: translateY(-1px);
+  opacity: 0.9;
+}
+
+.hero-cta:focus-visible {
+  outline: 2px solid var(--text-pure-white);
+  outline-offset: 3px;
+}
+
+.hero-cta svg {
+  transition: transform 0.18s ease;
+}
+
+.hero-cta:hover svg {
+  transform: translateX(2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #hero-organism { display: none; }
+}
+
+/* ============================================================
+   Proof Section
+   ============================================================ */
+
+.proof-section {
+  padding: var(--space-2xl) 0;
+  background-color: var(--bg-off-white);
+}
+
+.proof-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-lg);
+  margin-top: var(--space-xl);
+}
+
+.proof-card {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem; /* Cohere uses a generous ~32px internal padding */
+  background-color: var(--bg-white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.proof-card:hover {
+  border-color: var(--brand-primary);
+  box-shadow: var(--shadow-card-lift);
+}
+
+/* The visual anchor at the top of the card */
+.proof-card__image {
+  height: 32px;
+  width: 32px;
+  margin-bottom: var(--space-lg); /* Pushes the text down */
+  color: var(--brand-primary); /* If using inline SVG with stroke="currentColor" */
+}
+
+.proof-card__image img,
+.proof-card__image svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.proof-card__title {
+  margin: 0 0 var(--space-sm) 0;
+  font-size: 1.125rem; /* 18px */
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--text-dark);
+}
+
+.proof-card__body {
+  margin: 0;
+  font-size: 0.9375rem; /* 15px */
+  line-height: 1.55;
+  color: var(--text-medium);
+}
+
+/* Tablet: 2 columns */
+@media (max-width: 960px) {
+  .proof-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Mobile: 1 column */
+@media (max-width: 767px) {
+  .proof-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  .proof-card {
+    padding: var(--space-lg) var(--space-md);
+  }
 }
