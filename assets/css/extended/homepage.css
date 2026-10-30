@@ -1954,36 +1954,36 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 0.875rem;
 }
 
-.partner-card__headshot-wrap {
-  position: relative;
-  flex: 0 0 auto;
-  width: 120px;
-  aspect-ratio: 1 / 1;
-  border-radius: var(--radius-sm);
-  overflow: hidden; /* Clips the image to the rounded corners */
-  isolation: isolate;
-}
-
 .partner-card__headshot {
-  width: 100%;
-  height: 100%;
+  /* 1. Force the flexbox not to shrink it */
+  flex: 0 0 120px;
+
+  /* 2. Lock the exact dimensions, overriding global img rules */
+  width: 120px;
+  min-width: 120px;
+  max-width: 120px;
+  height: 120px;
+  min-height: 120px;
+  max-height: 120px;
+
+  /* 3. Fill the box cleanly */
   object-fit: cover;
-  display: block;
+  border-radius: var(--radius-sm);
+  filter: grayscale(100%) contrast(1.05);
+  transition: filter 0.3s ease;
 }
 
-.partner-card__headshot-wrap::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-color: var(--brand-alt3);
-  mix-blend-mode: multiply;
-  opacity: 0.5;
-  pointer-events: none;
-}
-
-/* Responsive sizing moves to the wrapper */
+/* two cards at 768px are ~350px wide — 120px headshot crowds the text */
 @media (max-width: 959px) {
-  .partner-card__headshot-wrap { width: 80px; }
+  .partner-card__headshot {
+    flex: 0 0 80px;
+    width: 80px;
+    min-width: 80px;
+    max-width: 80px;
+    height: 80px;
+    min-height: 80px;
+    max-height: 80px;
+  }
 }
 
 .partner-card__bio {
@@ -2203,26 +2203,26 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  /* Always dark — the rest of the page is light-only, so the hero
-     stays a fixed dark shell rather than following any theme */
-  background: var(--bg-dark-green);
-  color: var(--text-pure-white);
-}
-
-.hero-intro__visual {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  /* soften top/bottom so the field doesn't collide with nav or next section */
-  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
-  mask-image: linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
 }
 
 #hero-organism {
-  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   width: 100%;
   height: 100%;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Keep the network visually subordinate to the typography */
+.hero-intro h1,
+.hero-intro p {
+  position: relative;
 }
 
 /* Content */

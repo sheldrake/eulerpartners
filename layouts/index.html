@@ -213,7 +213,7 @@
 
       <article class="proof-card">
         <div class="proof-card__image">
-          <img src="{{ "images/40years.png" | relURL }}" alt="Combined 40+ years">
+          <img src="{{ "images/40years.png" | relURL }}" alt="Abstract image / combined 40+ years">
         </div>
         <h3 class="proof-card__title">Combined 40+ years</h3>
         <p class="proof-card__body">
@@ -223,7 +223,7 @@
 
       <article class="proof-card">
         <div class="proof-card__image">
-          <img src="{{ "images/ai-innovation.png" | relURL }}" alt="Combined 40+ years">
+          <img src="{{ "images/ai-innovation.png" | relURL }}" alt="Software 4.0 / AI innovation">
         </div>
         <h3 class="proof-card__title">AI innovation</h3>
         <p class="proof-card__body">
@@ -233,7 +233,7 @@
 
       <article class="proof-card">
         <div class="proof-card__image">
-          <img src="{{ "images/thought-leadership.png" | relURL }}" alt="Combined 40+ years">
+          <img src="{{ "images/thought-leadership.png" | relURL }}" alt="The Business of Influence / thought leadership">
         </div>
         <h3 class="proof-card__title">Thought leadership</h3>
         <p class="proof-card__body">
@@ -243,7 +243,7 @@
 
       <article class="proof-card">
         <div class="proof-card__image">
-          <img src="{{ "images/speaking.png" | relURL }}" alt="Combined 40+ years">
+          <img src="{{ "images/speaking.png" | relURL }}" alt="An audience / Speaking">
         </div>
         <h3 class="proof-card__title">Speaking</h3>
         <p class="proof-card__body">
@@ -253,7 +253,7 @@
 
       <article class="proof-card">
         <div class="proof-card__image">
-          <img src="{{ "images/doctorate.png" | relURL }}" alt="Combined 40+ years">
+          <img src="{{ "images/doctorate.png" | relURL }}" alt="UCL building">
         </div>
         <h3 class="proof-card__title">Accreditation</h3>
         <p class="proof-card__body">
@@ -281,19 +281,30 @@
             <p class="partner-card__role text-body">Technologist, digital innovator, consultant, and researcher spanning AI, Web3, and identity</p>
           </div>
           <div class="partner-card__headshot-wrap">
-          <img class="partner-card__headshot"
-               src="/images/philip.jpg" alt="Philip Sheldrake"
-               width="240" height="240" loading="lazy" decoding="async">
+
+
+{{ $img := resources.Get "images/philip.jpg" }}
+{{ if $img }}
+  {{ $thumb := $img.Fill "240x240 Center" }}
+  <img class="partner-card__headshot"
+       src="{{ $thumb.RelPermalink }}"
+       alt="Philip Sheldrake"
+       width="{{ $thumb.Width }}"
+       height="{{ $thumb.Height }}"
+       loading="lazy"
+       decoding="async">
+{{ end }}
+
           </div>
         </div>
         <div class="partner-card__bio">
           <p class="text-body">
-          Philip is driven to bring people and technology together beautifully. He works at the intersection of human systems and technological innovation. Most recently, Philip has been working with a team of software architects and engineers, developing the concept and realisation of supersoftware — software that is itself symbolic AI — for unparalleled neurosymbolic integration with LLMs.
+          Philip works at the intersection of human systems and technological innovation. Most recently, he's been working with a team of software architects and engineers, developing the concept and realisation of supersoftware — software that is itself symbolic AI — for unparalleled neurosymbolic integration with LLMs.
           </p>
           <p class="text-body">
           Clients range from a flagship airline and multi-$bn growth equity fund, to SMEs and embryonic technical protocols. He contributed to the Ethereum Foundation’s early organisational deliberations, and worked alongside an Ethereum co-founder on questions of decentralised social and decentralised organising. His design for a systemic intervention in the agri-food sector is adopted by the UN Environment Programme's Good Food Finance Network.</p>
           <p class="text-body">
-          Philip is frequently invited to bring a fresh perspective to complex domains: an invitation to critique a chapter of Radical Markets by its author Glen Weyl; presenting alongside Vitalik Buterin and Professors Margaret Levi and Prof Bryan Ford on the complexities of online demomcracy; influencing Dutch government policy on European digital identity.</p>
+          Philip is frequently invited to bring a fresh perspective to complex domains: an invitation to critique a chapter of Radical Markets by its author Glen Weyl; presenting alongside Vitalik Buterin and Professors Margaret Levi and Prof Bryan Ford on the complexities of online democracy; influencing Dutch government policy on European digital identity.</p>
           <p class="text-body">
           His geekiest moment — chairing a conversation with Sir Tim Berners-Lee at the Royal Society.</p>
         </div>
@@ -336,9 +347,21 @@
             <p class="partner-card__role text-body">Stakeholder engagement, change, and governance</p>
           </div>
           <div class="partner-card__headshot-wrap">
-          <img class="partner-card__headshot"
-               src="/images/jay.jpg" alt=""
-               width="240" height="240" loading="lazy" decoding="async">
+
+
+{{ $img := resources.Get "images/jay.jpg" }}
+{{ if $img }}
+  {{ $thumb := $img.Fill "240x240 Center" }}
+  <img class="partner-card__headshot"
+       src="{{ $thumb.RelPermalink }}"
+       alt="Jay O'Connor"
+       width="{{ $thumb.Width }}"
+       height="{{ $thumb.Height }}"
+       loading="lazy"
+       decoding="async">
+{{ end }}
+
+
           </div>
         </div>
         <div class="partner-card__bio">
