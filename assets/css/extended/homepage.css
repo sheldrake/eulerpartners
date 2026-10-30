@@ -531,11 +531,11 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .service-text-wrapper {
-    flex: 0 1 60%;
+    flex: 0 1 50%;
   }
 
   .service-deliverables {
-    flex: 0 1 40%;
+    flex: 0 1 50%;
   }
 
   .service-card-1,
