@@ -1954,17 +1954,36 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 0.875rem;
 }
 
-.partner-card__headshot {
+.partner-card__headshot-wrap {
+  position: relative;
   flex: 0 0 auto;
   width: 120px;
   aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border-radius: var(--radius-sm); /* drop to 0 if service cards are sharp */
+  border-radius: var(--radius-sm);
+  overflow: hidden; /* Clips the image to the rounded corners */
+  isolation: isolate;
 }
 
-/* two cards at 768px are ~350px wide — 120px headshot crowds the text */
+.partner-card__headshot {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.partner-card__headshot-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--brand-alt3);
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Responsive sizing moves to the wrapper */
 @media (max-width: 959px) {
-  .partner-card__headshot { width: 80px; }
+  .partner-card__headshot-wrap { width: 80px; }
 }
 
 .partner-card__bio {
@@ -3253,6 +3272,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-pure-white);
 }
 
+
 .hero-intro__visual {
   position: absolute;
   inset: 0;
@@ -3261,6 +3281,18 @@ h1, h2, h3, h4, h5, h6 {
   /* soften top/bottom so the field doesn't collide with nav or next section */
   -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
   mask-image: linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
+}
+
+/* Mobile: aggressively fade the left side so the copy is perfectly readable */
+@media (max-width: 767px) {
+  .hero-intro__visual {
+    -webkit-mask-image:
+      linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%),
+      linear-gradient(90deg, transparent 0%, transparent 40%, #000 80%, #000 100%);
+    mask-image:
+      linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%),
+      linear-gradient(90deg, transparent 0%, transparent 40%, #000 80%, #000 100%);
+  }
 }
 
 #hero-organism {
@@ -3380,17 +3412,16 @@ h1, h2, h3, h4, h5, h6 {
 
 /* The visual anchor at the top of the card */
 .proof-card__image {
-  height: 32px;
-  width: 32px;
-  margin-bottom: var(--space-lg); /* Pushes the text down */
-  color: var(--brand-primary); /* If using inline SVG with stroke="currentColor" */
+  width: 100%;
+  height: auto;
+  margin-bottom: var(--space-lg);
 }
 
-.proof-card__image img,
-.proof-card__image svg {
+.proof-card__image img {
   width: 100%;
-  height: 100%;
-  object-fit: contain;
+  height: auto;
+  display: block;
+  border-radius: var(--radius-sm); /* Optional: rounds the image slightly */
 }
 
 .proof-card__title {

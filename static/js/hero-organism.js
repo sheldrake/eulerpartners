@@ -15,15 +15,15 @@
     ],
     glow: 0.15,
     blend: 'lighter',
-    fade: 0.035 // Clears old growth faster, prevents dense mesh
+    fade: 0.025
   };
 
   // Tunables
-  const FLOW_STRENGTH = 0.022;  // Gentle steering
-  const EDGE_MARGIN  = 100;
-  const EDGE_STRENGTH = 0.03;
-  const NARROW_MIN = 0.45, NARROW_MAX = 0.85; // Distinct Y-junction angles
-  const WIDE_MIN   = 1.0,  WIDE_MAX   = 1.4;
+  const FLOW_STRENGTH = 0.008;  // Much lower: global current barely matters
+  const EDGE_MARGIN  = 80;
+  const EDGE_STRENGTH = 0.06;
+  const NARROW_MIN = 0.3, NARROW_MAX = 0.8;
+  const WIDE_MIN   = 1.0,  WIDE_MAX   = 1.6;
 
   let w = 0, h = 0, branches = [], boutons = [], raf = 0;
 
@@ -39,43 +39,41 @@
     return true;
   }
 
-  // Very low frequency flow field. Creates broad, sweeping, organic river-like curves.
+  // Gentle global flow — just enough to keep it from looking purely random.
   function flowAngle(x, y, phase) {
-    const a = Math.sin(x * 0.0010 + 1.7 + phase) + Math.cos(y * 0.0013 - 0.9 + phase);
-    const b = Math.sin(x * 0.0005 - 0.4 + phase) * 0.5 + Math.cos(y * 0.0007 + 2.3 + phase) * 0.5;
-    return (a + b) * 1.5;
+    const a = Math.sin(x * 0.002 + 1.7 + phase) + Math.cos(y * 0.0025 - 0.9 + phase);
+    const b = Math.sin(x * 0.001 - 0.4 + phase) * 0.5 + Math.cos(y * 0.0013 + 2.3 + phase) * 0.5;
+    return (a + b) * 1.2;
   }
 
   function addBranch(x, y, a, width, maxLen, color) {
     branches.push({
       x, y, a, len: 0, max: maxLen, width, color,
-      phase: Math.random() * Math.PI * 2, // Unique phase offset
-      curl: (Math.random() - 0.5) * 0.02   // Gentle persistent curl
+      phase: Math.random() * Math.PI * 2,
+      curl: (Math.random() - 0.5) * 0.06 // High persistent curl
     });
   }
 
+  // Seed from 3–5 random interior points, with random initial headings.
+  // This creates the "radiating from nodes" look of a neural/mycelial network.
   function addSeeds(n) {
     for (let i = 0; i < n; i++) {
-      let x, y, a;
-      const r = Math.random();
-
-      // Seed from edges, creeping inward
-      if (r < 0.45) {
-        x = w - 10;
-        y = h * (0.1 + Math.random() * 0.9);
-        a = Math.PI + (Math.random() - 0.5) * 0.6;
-      } else if (r < 0.85) {
-        x = w * (0.3 + Math.random() * 0.7);
-        y = h + 10;
-        a = -Math.PI / 2 + (Math.random() - 0.5) * 0.6;
+      // Bias seeds toward the right and bottom-right, but allow some center-right.
+      let x, y;
+      if (w < 767) {
+        // Mobile: keep entirely on the right half
+        x = w * (0.6 + Math.random() * 0.35);
+        y = h * (0.1 + Math.random() * 0.8);
       } else {
-        x = w * (0.5 + Math.random() * 0.5);
-        y = -10;
-        a = Math.PI / 2 + (Math.random() - 0.5) * 0.6;
+        x = w * (0.35 + Math.random() * 0.6);
+        y = h * (0.1 + Math.random() * 0.8);
       }
 
-      // Thicker base veins, longer lifespans (encourages recursive branching)
-      addBranch(x, y, a, 1.0 + Math.random() * 1.5, 250 + Math.random() * 400,
+      // Random initial heading, full 360°
+      const a = Math.random() * Math.PI * 2;
+
+      // Thicker, longer roots
+      addBranch(x, y, a, 1.2 + Math.random() * 1.8, 300 + Math.random() * 500,
         PAL.filaments[(Math.random() * PAL.filaments.length) | 0]);
     }
   }
@@ -86,18 +84,21 @@
     ctx.fillRect(0, 0, w, h);
 
     ctx.lineCap = 'round';
-    const MAX = 280;
+    const MAX = 350;
 
     for (let i = branches.length - 1; i >= 0; i--) {
       const b = branches[i];
-      const d = 0.8 + Math.random() * 1.2; // Slightly longer steps
+
+      // SMALL STEPS: 0.25–0.6 px per frame
+      const d = 0.25 + Math.random() * 0.35;
 
       const target = flowAngle(b.x, b.y, b.phase);
       let dA = target - b.a;
       dA = Math.atan2(Math.sin(dA), Math.cos(dA));
 
-      // Jitter reduced to 0.02 so the flow field dominates and lines stay smooth
-      b.a += dA * FLOW_STRENGTH + b.curl + (Math.random() - 0.5) * 0.02;
+      // HIGH JITTER: 0.12 rad per step creates the squiggle.
+      // Low flow strength means the jitter isn't immediately corrected.
+      b.a += dA * FLOW_STRENGTH + b.curl + (Math.random() - 0.5) * 0.12;
 
       // Edge containment
       let pushX = 0, pushY = 0;
@@ -129,10 +130,10 @@
       ctx.lineWidth = b.width;
       ctx.beginPath(); ctx.moveTo(b.x, b.y); ctx.lineTo(nx, ny); ctx.stroke();
 
-      b.x = nx; b.y = ny; b.len += d; b.width *= 0.9975; // Slower taper
+      b.x = nx; b.y = ny; b.len += d; b.width *= 0.9975;
 
-      // Fractal Branching: fewer seeds, but they branch heavily into a hierarchy
-      if (Math.random() < 0.025 && branches.length < MAX && b.len > 20) {
+      // Branching: higher probability for a denser, more fractal network
+      if (Math.random() < 0.06 && branches.length < MAX && b.len > 15) {
         const wide = Math.random() < 0.15;
         const spread = wide
           ? WIDE_MIN + Math.random() * (WIDE_MAX - WIDE_MIN)
@@ -142,13 +143,12 @@
         addBranch(b.x, b.y, b.a + spread * side, b.width * 0.75,
           Math.min(b.max * 0.8, 100 + Math.random() * 200), b.color);
 
-        // Occasional double-fork (Y-junction)
-        if (!wide && Math.random() < 0.3) {
+        if (!wide && Math.random() < 0.4) {
           addBranch(b.x, b.y, b.a - spread * side, b.width * 0.65,
             Math.min(b.max * 0.6, 80 + Math.random() * 150), b.color);
         }
 
-        if (b.width > 1.2) {
+        if (b.width > 1.0) {
           boutons.push({ x: b.x, y: b.y, r: b.width * 1.8, life: 1 });
         }
       }
@@ -166,7 +166,7 @@
     for (let i = boutons.length - 1; i >= 0; i--) {
       const bt = boutons[i];
       ctx.globalCompositeOperation = PAL.blend;
-      ctx.globalAlpha = bt.life * 0.2;
+      ctx.globalAlpha = bt.life * 0.25;
       ctx.fillStyle = 'rgba(180, 222, 190, 1)';
       ctx.beginPath();
       ctx.arc(bt.x, bt.y, bt.r, 0, Math.PI * 2);
@@ -175,8 +175,8 @@
       if (bt.life <= 0) boutons.splice(i, 1);
     }
 
-    // Replenish slowly to maintain the hierarchy
-    if (branches.length < 20) addSeeds(4);
+    // Replenish: if the network thins out, add 3–4 new seeds
+    if (branches.length < 25) addSeeds(3 + Math.floor(Math.random() * 2));
   }
 
   function loop() {
@@ -184,19 +184,19 @@
     raf = requestAnimationFrame(loop);
   }
 
-  function restart(warm = 400) {
+  function restart(warm = 900) { // Long warmup because steps are tiny
     cancelAnimationFrame(raf);
     if (!size()) return;
     ctx.clearRect(0, 0, w, h);
     branches = [];
     boutons = [];
-    addSeeds(14);
+    addSeeds(4); // Start with 4 seeds
     for (let i = 0; i < warm; i++) step();
     if (!reduceMotion) raf = requestAnimationFrame(loop);
   }
 
   let rt;
-  const onResize = () => { clearTimeout(rt); rt = setTimeout(() => restart(150), 220); };
+  const onResize = () => { clearTimeout(rt); rt = setTimeout(() => restart(200), 220); };
   if ('ResizeObserver' in window) new ResizeObserver(onResize).observe(hero);
   else window.addEventListener('resize', onResize);
 
@@ -209,5 +209,5 @@
     }
   });
 
-  restart(400);
+  restart(900);
 })();
