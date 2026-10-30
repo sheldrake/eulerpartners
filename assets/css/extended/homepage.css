@@ -271,9 +271,44 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ===== Hero Intro ===== */
-.hero-intro, .section-title {
+.hero-intro {
   padding: var(--space-5xl) 0 var(--space-3xl) 0;
   background-color: var(--bg-off-white);
+}
+
+/* Half the old hero-to-title whitespace (was space-5xl + space-3xl,
+   now space-2xl + space-2xl either side of the join) */
+.section-title {
+  padding: var(--space-2xl) 0 var(--space-lg) 0;
+  background-color: var(--bg-off-white);
+}
+
+/* Match the services card column exactly, so the heading sits on the
+   same left edge as the cards below it */
+.section-title .container {
+  max-width: var(--card-width);
+  padding: 0;
+}
+
+/* Section title rule — the same line used before "Euler Partners" in
+   the hero-intro eyebrow, here sitting above the heading */
+.section-title h2,
+.proof-section h2,
+.partners-section h2 {
+  position: relative;
+  padding-top: var(--space-sm);
+}
+
+.section-title h2::before,
+.proof-section h2::before,
+.partners-section h2::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3rem;
+  height: 2px;
+  background-color: currentColor;
 }
 
 .hero-intro .container {
@@ -288,15 +323,6 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   text-transform: uppercase;
 }
-
-.section-title h1 {
-  font-size: clamp(2.5rem, 7vw, 4rem);
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-  margin-bottom: var(--space-md);
-  font-weight: 600;
-}
-
 .hero-subtitle {
   font-size: clamp(1.25rem, 3vw, 1.75rem);
   color: var(--text-medium);
@@ -304,81 +330,22 @@ h1, h2, h3, h4, h5, h6 {
   max-width: 60ch;
 }
 
-  .section-title h1 {
-    text-align: center;
-  }
-
 /* ===== Campaign Section ===== */
 .hero {
-  position: relative;
-  display: flex;
-  flex-direction: column;
+  padding: var(--space-3xl) 0 var(--space-2xl);
+  background-color: var(--bg-off-white);
 }
 
-.hero-split {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  min-height: 30vh;
-}
-
-@media (min-width: 768px) {
-  .hero-split {
-    flex-direction: row;
-    min-height: 40vh;
-  }
-}
-
-.hero-panel {
-  position: relative;
-  flex: 1;
-  min-height: 300px;
-  display: flex;
-  align-items: flex-start;
-  padding: var(--space-lg);
-}
-
-.hero-panel-left {
-  background-color: oklch(from var(--brand-primary) calc(l * 0.8) c h);
-  color: var(--text-pure-white);
-  /* Full-bleed panel: hold the text at the old container edge on wide viewports.
-     Percentages in padding resolve against the containing block (.hero-split),
-     and this panel is 50% of it. */
-  padding-left: max(var(--space-lg), calc(50% - var(--max-width) / 2 + var(--space-lg)));
-  justify-content: flex-start;   /* or align-content: start / align-items: start */
-}
-
-.hero-panel-right {
-  background-color: var(--bg-dark-green);
-  overflow: hidden;
-}
-
-.hero-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 10;
-  max-width: 554px;
-  width: 100%;
-  padding: 2rem 0;
-}
-
-.hero-text {
-  container-type: inline-size;   /* the text column, not the whole hero */
+/* Same measure as the hero-intro column, so the copy aligns with it */
+.hero .container {
+  max-width: 700px;
 }
 
 .hero-questions {
-  font-size: clamp(1.4rem, 7.5cqw, 3rem);
+  font-size: clamp(1.4rem, 5vw, 3rem);
   line-height: 1.1;
   font-weight: 600;
-  color: var(--text-pure-white);
+  color: var(--text-dark);
   margin-bottom: var(--space-lg);
 }
 
@@ -391,8 +358,7 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.7;
   margin-bottom: var(--space-lg);
   max-width: 50ch;
-  color: var(--text-pure-white);
-  opacity: 0.9;
+  color: var(--text-dark);
 }
 
 /* ===== CTA Button ===== */
@@ -485,7 +451,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .services-section {
-  padding: var(--space-xl) 0 var(--space-3xl) 0 ;
+  padding: var(--space-lg) 0 var(--space-3xl) 0 ;
   background-color: var(--bg-off-white);
   position: relative;
 }
@@ -500,7 +466,7 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (min-width: 768px) {
   .services-section {
-    padding: var(--space-xl) 0 var(--space-3xl) 0 ;
+    padding: var(--space-lg) 0 var(--space-3xl) 0 ;
 }
   }
 
@@ -1156,29 +1122,8 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 1.0625rem;
   }
 
-  .hero-intro,  .section-title {
+  .hero-intro {
     padding: var(--space-5xl) 0 var(--space-3xl) 0;
-  }
-
-  .section-title h1 {
-    font-size: clamp(1.75rem,6vw,2.5rem);
-  }
-
-  .hero {
-    min-height: auto;
-  }
-
-  .hero-split {
-    min-height: 40vh;
-  }
-
-  .hero-panel {
-    min-height: 280px;
-    padding: var(--space-md);
-  }
-
-  .section-title h1 {
-    text-align: center;
   }
 
   .pin-spacer {
@@ -1239,10 +1184,6 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 1.25rem;
   }
 
-  .hero-panel {
-    min-height: 250px;
-  }
-
   .service-card-cohere {
     padding: var(--space-sm);
   }
@@ -1261,10 +1202,6 @@ h1, h2, h3, h4, h5, h6 {
 
   .hero-intro, .section-title {
     padding: var(--space-lg) 0;
-  }
-
-  .hero {
-    min-height: auto;
   }
 
   .service-card-cohere {
@@ -1700,4 +1637,109 @@ h1, h2, h3, h4, h5, h6 {
   .proof-list li::before {
     font-size: 1.25rem;
   }
+}
+
+/* ---------- Hero shell annimation ---------- */
+.hero-intro {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* Always dark — the rest of the page is light-only, so the hero
+     stays a fixed dark shell rather than following any theme */
+  background: var(--bg-dark-green);
+  color: var(--text-pure-white);
+}
+
+.hero-intro__visual {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* soften top/bottom so the field doesn't collide with nav or next section */
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
+}
+
+#hero-organism {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Content */
+.hero-intro .container {
+  position: relative;
+  z-index: 1;
+  padding-block: clamp(3.5rem, 11vh, 7rem);
+}
+
+/* Eyebrow sits on the dark shell: same colour as the subtitle, not brand green.
+   A single rule line replaces any dash characters. */
+.hero-intro .eyebrow {
+  color: rgb(255 255 255 / 0.72);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.hero-intro .eyebrow::before {
+  content: "";
+  width: 3rem;
+  height: 2px;
+  background-color: currentColor;
+}
+
+.hero-intro h1 {
+  margin: 0;
+  font-size: clamp(2.25rem, 5.5vw, 3.75rem);
+  line-height: 1.06;
+  letter-spacing: -0.022em;
+  font-weight: 700;
+  color: var(--text-pure-white);
+}
+
+.hero-subtitle {
+  margin: 1.35rem 0 0;
+  max-width: 52ch;
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  line-height: 1.6;
+  color: rgb(255 255 255 / 0.72);
+}
+
+/* Single CTA */
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 2.1rem;
+  padding: 0.85rem 1.5rem;
+  border-radius: var(--radius, 8px);
+  background: var(--text-pure-white);
+  color: var(--bg-dark-green);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.18s ease, opacity 0.18s ease;
+}
+
+.hero-cta:hover {
+  transform: translateY(-1px);
+  opacity: 0.9;
+}
+
+.hero-cta:focus-visible {
+  outline: 2px solid var(--text-pure-white);
+  outline-offset: 3px;
+}
+
+.hero-cta svg {
+  transition: transform 0.18s ease;
+}
+
+.hero-cta:hover svg {
+  transform: translateX(2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #hero-organism { display: none; }
 }
