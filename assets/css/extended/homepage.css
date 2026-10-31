@@ -3458,3 +3458,14 @@ h1, h2, h3, h4, h5, h6 {
     padding: var(--space-lg) var(--space-md);
   }
 }
+
+/* ----------------
+ * Helping Hugo render images nicely
+ * ------------ */
+.post-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-sm);
+  display: block;
+  margin: var(--space-lg) auto; /* Centers the image and adds space above/below */
+}

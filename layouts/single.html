@@ -1,0 +1,33 @@
+{{- define "main" -}}
+
+  <div class="header-spacer"></div>
+
+  <main>
+    <article class="page">
+      <div class="container">
+        <header class="page-header">
+          {{- with .Parent }}
+            {{- if not .IsHome }}
+          <p class="eyebrow text-small"><a href="{{ .RelPermalink }}">{{ .Title }}</a></p>
+            {{- end }}
+          {{- end }}
+          <h1 class="page-title">{{ .Title }}</h1>
+          {{- with .Date }}
+          <p class="page-meta text-small">
+            <time datetime="{{ .Format "2006-01-02" }}">{{ .Format "2 January 2006" }}</time>
+          </p>
+          {{- end }}
+        </header>
+
+        {{- /* Content files open with an H1 that duplicates the title
+               above (concept pages use it as a "Concepts / Trust"
+               breadcrumb, provided by the eyebrow link instead). */ -}}
+        {{- $content := replaceRE `(?s)^\s*<h1[^>]*>.*?</h1>\s*` "" $.Content -}}
+        <div class="page-content">
+          {{- $content | safeHTML -}}
+        </div>
+      </div>
+    </article>
+  </main>
+
+{{- end -}}

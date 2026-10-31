@@ -1,0 +1,29 @@
+{{- define "main" -}}
+
+  <div class="header-spacer"></div>
+
+  <main>
+    <article class="page page-list">
+      <div class="container">
+        <header class="page-header">
+          <p class="eyebrow text-small"><a href="{{ "" | relLangURL }}">Euler Partners</a></p>
+          <h1 class="page-title">{{ .Title }}</h1>
+        </header>
+
+        {{- if .Content }}
+          {{- $content := replaceRE `(?s)^\s*<h1[^>]*>.*?</h1>\s*` "" .Content -}}
+          <div class="page-content">
+            {{- $content | safeHTML -}}
+          </div>
+        {{- else }}
+          <ul class="page-index-list">
+            {{- range .Pages }}
+            <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+            {{- end }}
+          </ul>
+        {{- end }}
+      </div>
+    </article>
+  </main>
+
+{{- end -}}

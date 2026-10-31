@@ -1,0 +1,33 @@
+{{ $src := .Get "src" }}
+{{ $caption := .Get "caption" }}
+{{ $alt := .Get "alt" | default $caption }}
+
+{{ $img := resources.Get (strings.TrimPrefix "/" $src) }}
+{{ if $img }}
+  <!-- Process the image via Hugo Pipes -->
+  {{ $small := $img.Resize "600x webp" }}
+  {{ $large := $img.Resize "1200x webp" }}
+  <figure>
+    <img
+      src="{{ $large.RelPermalink }}"
+      srcset="{{ $small.RelPermalink }} 600w, {{ $large.RelPermalink }} 1200w"
+      sizes="(max-width: 600px) 600px, 1200px"
+      alt="{{ $alt }}"
+      loading="lazy"
+      width="{{ $large.Width }}"
+      height="{{ $large.Height }}"
+    >
+    {{ with $caption }}
+      <!-- . | markdownify allows you to use standard Markdown links in the caption -->
+      <figcaption>{{ . | markdownify }}</figcaption>
+    {{ end }}
+  </figure>
+{{ else }}
+  <!-- Fallback if the image isn't found in /assets -->
+  <figure>
+    <img src="{{ $src | safeURL }}" alt="{{ $alt }}">
+    {{ with $caption }}
+      <figcaption>{{ . | markdownify }}</figcaption>
+    {{ end }}
+  </figure>
+{{ end }}

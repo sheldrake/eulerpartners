@@ -1,0 +1,17 @@
+{{ $img := resources.Get (strings.TrimPrefix "/" .Destination) }}
+{{ if $img }}
+  {{ $small := $img.Resize "600x webp" }}
+  {{ $large := $img.Resize "1200x webp" }}
+  <img
+    class="post-image"
+    src="{{ $large.RelPermalink }}"
+    srcset="{{ $small.RelPermalink }} 600w, {{ $large.RelPermalink }} 1200w"
+    sizes="(max-width: 600px) 600px, 1200px"
+    alt="{{ .Text }}"
+    loading="lazy"
+    width="{{ $large.Width }}"
+    height="{{ $large.Height }}"
+  >
+{{ else }}
+  <img class="post-image" src="{{ .Destination | safeURL }}" alt="{{ .Text }}" />
+{{ end }}

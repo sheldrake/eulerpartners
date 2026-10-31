@@ -6,6 +6,7 @@
 
 ## Site wiring
 - `assets/css/extended/homepage.css` — homepage styles, bundled automatically by PaperMod.
+- `assets/css/extended/content-pages.css` — styles for content pages (`layouts/single.html`) and section indexes (`layouts/list.html`), reusing the homepage token palette. Also pins PaperMod's auto dark theme to light values (the site is light-only outside the hero). Bundled automatically by PaperMod.
 - `static/js/header.js` — header listener (show/hide on scroll) and hamburger nav toggle (shows the dropdown on small viewports, styles in `homepage.css` under the `max-width: 768px` block), loaded from `layouts/_partials/header.html`.
 - `static/js/services.js` — services card stack (pinned stage, scroll-driven card travel, dwell before group exit), loaded from `layouts/index.html`. Fallback: per-card `position: sticky` in `homepage.css`. Also collapses each card's Deliverables list behind its `.service-deliverables-toggle` button below 768px (expanded by tapping; always expanded on desktop, where the chevron is hidden in `homepage.css`). Without JS all deliverables lists render expanded.
 - `static/js/accordion.js` — reusable `accordion-section` component (exclusive open/close with animated panel height, first item open by default, and crossfade of an optional paired `.accordion-figure` photo), loaded from `layouts/index.html`. Not used by any current section; kept for reuse. Without JS all accordion panels render expanded and the first photo shows.
