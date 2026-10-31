@@ -2,24 +2,24 @@
 (() => {
   const hero = document.querySelector('.hero-intro');
   const canvas = document.getElementById('hero-organism');
+
   if (!hero || !canvas) return;
 
   const ctx = canvas.getContext('2d', { alpha: true });
   if (!ctx) return;
 
-  // -------------------------------------------------------
+  // =====================================================
   // CONFIGURATION
-  // -------------------------------------------------------
+  // =====================================================
 
   const CONFIG = {
-    fps: 30,
     maxTips: 38,
     maxPaths: 260,
     maxPoints: 9000,
     maxAnchors: 1600,
 
     speed: [13, 21],
-    pointSpacing: 3.0,
+    pointSpacing: 3,
 
     fusionRadius: 9,
     fusionChance: 0.20,
@@ -30,7 +30,6 @@
     fadeStart: 55,
     fadeEnd: 145,
 
-    // Three levels of hyphal hierarchy
     widths: [1.8, 0.95, 0.48],
 
     colours: [
@@ -41,21 +40,31 @@
 
     junction: 'rgba(188, 211, 170, 1)',
 
-    // Restrained illumination
     glow: 0.055,
 
-    // Simulation population
-    seeds: 8
+    seeds: 8,
+
+    // Simulation resolution
+    timestep: 1 / 30,
+
+    // Initial growth before displaying the animation
+    warmupSteps: 900
   };
 
   const TAU = Math.PI * 2;
   const CELL = 24;
-  const MAX_STEP = 1 / 30;
 
   const reducedMotion =
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  let w = 0, h = 0, dpr = 1;
+  // =====================================================
+  // STATE
+  // =====================================================
+
+  let w = 0;
+  let h = 0;
+  let dpr = 1;
+
   let tips = [];
   let paths = [];
   let anchors = [];
@@ -65,17 +74,20 @@
   let elapsed = 0;
   let accumulator = 0;
   let lastFrame = 0;
+
   let raf = 0;
   let running = false;
   let visible = true;
+
   let totalPoints = 0;
   let nextId = 1;
 
-  // -------------------------------------------------------
+  // =====================================================
   // UTILITIES
-  // -------------------------------------------------------
+  // =====================================================
 
-  const rand = (a, b) => a + Math.random() * (b - a);
+  const rand = (a, b) =>
+    a + Math.random() * (b - a);
 
   const clamp = (v, a, b) =>
     Math.max(a, Math.min(b, v));
@@ -89,14 +101,30 @@
   const cellKey = (x, y) =>
     `${Math.floor(x / CELL)},${Math.floor(y / CELL)}`;
 
+  // =====================================================
+  // SPATIAL INDEX
+  // =====================================================
+
   function addAnchor(x, y, owner, time) {
     const node = { x, y, owner, time };
-    const key = cellKey(x, y);
-
-    if (!grid.has(key)) grid.set(key, []);
-    grid.get(key).push(node);
 
     anchors.push(node);
+
+    const key = cellKey(x, y);
+
+    if (!grid.has(key)) {
+      grid.set(key, []);
+    }
+
+    grid.get(key).push(node);
+
+    // Prevent unlimited spatial memory.
+    if (anchors.length > CONFIG.maxAnchors) {
+      anchors.shift();
+      rebuildGrid();
+    }
+
+    return node;
   }
 
   function rebuildGrid() {
@@ -104,18 +132,18 @@
 
     for (const node of anchors) {
       const key = cellKey(node.x, node.y);
-      if (!grid.has(key)) grid.set(key, []);
+
+      if (!grid.has(key)) {
+        grid.set(key, []);
+      }
+
       grid.get(key).push(node);
     }
   }
 
-  // -------------------------------------------------------
-  // ENVIRONMENT
-  // -------------------------------------------------------
-
-  // A slow-moving directional field.
-  // It provides coherence without forcing all growth
-  // in the same direction.
+  // =====================================================
+  // ENVIRONMENTAL FIELD
+  // =====================================================
 
   function environment(x, y) {
     const nx = x / Math.max(w, 1);
@@ -131,9 +159,7 @@
       Math.cos(nx * 4.6 + t * 0.6) * 0.4 +
       Math.sin(ny * 5.5 - t) * 0.3;
 
-    // Several soft nutrient centres.
-    // These encourage exploration towards the centre
-    // without creating obvious radial patterns.
+    // Slowly shifting nutrient centres.
 
     const nutrients = [
       [0.55, 0.25],
@@ -141,13 +167,14 @@
       [0.82, 0.46]
     ];
 
-    let ax = 0, ay = 0;
+    let ax = 0;
+    let ay = 0;
 
     for (const [px, py] of nutrients) {
       const dx = px * w - x;
       const dy = py * h - y;
-      const dist = Math.hypot(dx, dy) + 1;
 
+      const dist = Math.hypot(dx, dy) + 1;
       const influence = 1 / (1 + dist / 150);
 
       ax += dx / dist * influence;
@@ -157,8 +184,7 @@
     vx += ax * 0.24;
     vy += ay * 0.24;
 
-    // Keep growth biased away from the far-left edge.
-    // This protects the text area.
+    // Keep most of the growth away from the text.
 
     if (nx < 0.42) {
       vx += 0.7 * (0.42 - nx);
@@ -167,39 +193,55 @@
     return Math.atan2(vy, vx);
   }
 
-  // -------------------------------------------------------
-  // PATHS AND GROWTH AGENTS
-  // -------------------------------------------------------
+  // =====================================================
+  // PATH CREATION
+  // =====================================================
 
   function createPath(x, y, level) {
     const path = {
       id: nextId++,
+
       points: [{ x, y }],
+
       level,
       width: CONFIG.widths[level],
+
       created: elapsed,
       lastGrowth: elapsed,
+
       reinforcement: 0,
+
       colour: CONFIG.colours[level]
     };
 
     paths.push(path);
+    totalPoints++;
+
     return path;
   }
+
+  // =====================================================
+  // GROWTH AGENTS
+  // =====================================================
 
   function createTip(x, y, angle, level, parent = null) {
     if (tips.length >= CONFIG.maxTips) return;
 
     const path = createPath(x, y, level);
 
-    tips.push({
+    const tip = {
       id: nextId++,
-      x, y,
+
+      x,
+      y,
       angle,
+
       level,
       path,
 
-      speed: rand(...CONFIG.speed) * (level === 0 ? 1 : 0.85),
+      speed:
+        rand(...CONFIG.speed) *
+        (level === 0 ? 1 : 0.85),
 
       energy: rand(0.75, 1),
       age: 0,
@@ -211,8 +253,15 @@
       anchorTimer: rand(9, 16),
 
       travelled: 0,
+
       parent
-    });
+    };
+
+    tips.push(tip);
+
+    // IMPORTANT:
+    // Anchors belong to pathway IDs, not agent IDs.
+    addAnchor(x, y, path.id, elapsed);
   }
 
   function createSeeds() {
@@ -220,12 +269,15 @@
       const x = rand(w * 0.57, w * 0.96);
       const y = rand(h * 0.08, h * 0.92);
 
-      // Predominantly inward-facing, but not uniformly so.
       const angle = Math.PI + rand(-0.95, 0.95);
 
       createTip(x, y, angle, 0);
     }
   }
+
+  // =====================================================
+  // BRANCHING
+  // =====================================================
 
   function branch(tip) {
     if (tip.level >= 2) return;
@@ -233,18 +285,22 @@
     if (tip.energy < 0.45) return;
 
     const spread = rand(...CONFIG.branchAngle);
-    const direction = Math.random() < 0.5 ? -1 : 1;
 
-    // Main secondary branch.
+    const direction =
+      Math.random() < 0.5 ? -1 : 1;
+
+    // Secondary hypha.
+
     createTip(
       tip.x,
       tip.y,
       tip.angle + spread * direction,
       tip.level + 1,
-      tip.id
+      tip.path.id
     );
 
-    // Occasionally produce a second branch.
+    // Occasionally create a second branch.
+
     if (
       tip.level === 0 &&
       Math.random() < 0.42 &&
@@ -255,20 +311,23 @@
         tip.y,
         tip.angle - spread * direction * rand(0.65, 1.15),
         1,
-        tip.id
+        tip.path.id
       );
     }
 
     tip.energy -= 0.12;
-    tip.branchTimer = rand(...CONFIG.branchInterval) *
+
+    tip.branchTimer =
+      rand(...CONFIG.branchInterval) *
       (tip.level === 0 ? 1.2 : 0.85);
 
-    addAnchor(tip.x, tip.y, tip.id, elapsed);
+    // Record the actual pathway identity.
+    addAnchor(tip.x, tip.y, tip.path.id, elapsed);
   }
 
-  // -------------------------------------------------------
-  // ANASTOMOSIS: CONNECTION BETWEEN FILAMENTS
-  // -------------------------------------------------------
+  // =====================================================
+  // ANASTOMOSIS / NETWORK FUSION
+  // =====================================================
 
   function findConnection(tip) {
     const cx = Math.floor(tip.x / CELL);
@@ -279,19 +338,24 @@
 
     for (let ox = -1; ox <= 1; ox++) {
       for (let oy = -1; oy <= 1; oy++) {
-        const nodes = grid.get(`${cx + ox},${cy + oy}`);
+        const nodes = grid.get(
+          `${cx + ox},${cy + oy}`
+        );
+
         if (!nodes) continue;
 
         for (const node of nodes) {
-          // Don't connect to very recent growth.
+          // Avoid connecting to very recent growth.
           if (elapsed - node.time < 3) continue;
 
-          // Avoid reconnecting immediately to the same tip.
-          if (node.owner === tip.id) continue;
+          // Avoid connecting to the same pathway.
+          if (node.owner === tip.path.id) continue;
 
           const d = distance(
-            tip.x, tip.y,
-            node.x, node.y
+            tip.x,
+            tip.y,
+            node.x,
+            node.y
           );
 
           if (d < nearestDist && d > 2) {
@@ -306,26 +370,39 @@
   }
 
   function fuse(tip, node) {
-    if (Math.random() > CONFIG.fusionChance) return false;
+    if (Math.random() > CONFIG.fusionChance) {
+      return false;
+    }
+
+    // Create a visible connecting filament.
 
     const connection = {
+      id: nextId++,
+
       points: [
         { x: tip.x, y: tip.y },
         { x: node.x, y: node.y }
       ],
+
       level: Math.min(tip.level, 1),
+
       width: CONFIG.widths[tip.level] * 0.9,
+
       created: elapsed,
       lastGrowth: elapsed,
+
       reinforcement: 1,
+
       colour: CONFIG.colours[tip.level]
     };
 
     paths.push(connection);
+    totalPoints += 2;
 
-    // Reinforce the connected structure.
-    const related = paths.find(p =>
-      p.id === node.owner
+    // Reinforce the pathway being connected to.
+
+    const related = paths.find(
+      p => p.id === node.owner
     );
 
     if (related) {
@@ -342,29 +419,43 @@
       strength: 1
     });
 
-    addAnchor(node.x, node.y, tip.id, elapsed);
+    // Record the connection under its own pathway ID.
+    addAnchor(node.x, node.y, connection.id, elapsed);
 
+    // Stop this growth tip.
     tip.energy = 0;
+
     return true;
   }
 
-  // -------------------------------------------------------
-  // GROWTH SIMULATION
-  // -------------------------------------------------------
+  // =====================================================
+  // INDIVIDUAL TIP MOVEMENT
+  // =====================================================
 
   function updateTip(tip, dt) {
     tip.age += dt;
-    tip.energy -= dt * (tip.level === 2 ? 0.009 : 0.004);
 
-    if (tip.energy <= 0.08) return false;
+    tip.energy -= dt *
+      (tip.level === 2 ? 0.009 : 0.004);
 
-    // Slowly changing environmental influence.
+    if (tip.energy <= 0.08) {
+      return false;
+    }
+
+    // Environmental steering.
+
     const target = environment(tip.x, tip.y);
 
-    const steering = angleDiff(tip.angle, target);
+    const steering = angleDiff(
+      tip.angle,
+      target
+    );
 
-    // Correlated turning rather than random frame jitter.
-    tip.turn += (tip.turnTarget - tip.turn) * dt * 0.25;
+    // Correlated movement rather than frame-by-frame jitter.
+
+    tip.turn +=
+      (tip.turnTarget - tip.turn) *
+      dt * 0.25;
 
     if (Math.random() < dt * 0.35) {
       tip.turnTarget = rand(-0.12, 0.12);
@@ -373,51 +464,80 @@
     tip.angle += steering * dt * 0.42;
     tip.angle += tip.turn * dt * 2.2;
 
-    // Slight boundary avoidance.
+    // Boundary avoidance.
+
     const margin = 55;
 
     if (tip.x < margin) {
-      tip.angle += angleDiff(tip.angle, 0) * dt * 1.4;
+      tip.angle +=
+        angleDiff(tip.angle, 0) * dt * 1.4;
     } else if (tip.x > w - margin) {
-      tip.angle += angleDiff(tip.angle, Math.PI) * dt * 1.4;
+      tip.angle +=
+        angleDiff(tip.angle, Math.PI) * dt * 1.4;
     }
 
     if (tip.y < margin) {
-      tip.angle += angleDiff(tip.angle, Math.PI / 2) * dt * 1.2;
+      tip.angle +=
+        angleDiff(tip.angle, Math.PI / 2) * dt * 1.2;
     } else if (tip.y > h - margin) {
-      tip.angle += angleDiff(tip.angle, -Math.PI / 2) * dt * 1.2;
+      tip.angle +=
+        angleDiff(tip.angle, -Math.PI / 2) * dt * 1.2;
     }
 
-    const speed = tip.speed * (0.65 + tip.energy * 0.35);
+    const speed =
+      tip.speed * (0.65 + tip.energy * 0.35);
 
-    const nx = tip.x + Math.cos(tip.angle) * speed * dt;
-    const ny = tip.y + Math.sin(tip.angle) * speed * dt;
+    const nx =
+      tip.x + Math.cos(tip.angle) * speed * dt;
 
-    const moved = distance(tip.x, tip.y, nx, ny);
+    const ny =
+      tip.y + Math.sin(tip.angle) * speed * dt;
+
+    const moved = distance(
+      tip.x,
+      tip.y,
+      nx,
+      ny
+    );
 
     tip.x = nx;
     tip.y = ny;
+
     tip.travelled += moved;
 
-    // Store points only when sufficient distance has accumulated.
+    // Extend the filament.
+
     if (tip.travelled >= CONFIG.pointSpacing) {
       const path = tip.path;
 
-      path.points.push({ x: tip.x, y: tip.y });
+      path.points.push({
+        x: tip.x,
+        y: tip.y
+      });
+
       path.lastGrowth = elapsed;
 
       totalPoints++;
+
       tip.travelled = 0;
 
-      // Periodic network sampling.
+      // Periodically add a spatial anchor.
+
       tip.anchorTimer -= dt;
 
       if (tip.anchorTimer <= 0) {
-        addAnchor(tip.x, tip.y, tip.id, elapsed);
+        addAnchor(
+          tip.x,
+          tip.y,
+          path.id,
+          elapsed
+        );
+
         tip.anchorTimer = rand(9, 16);
       }
 
-      // Look for opportunities to fuse.
+      // Look for an opportunity to fuse.
+
       const nearby = findConnection(tip);
 
       if (nearby && fuse(tip, nearby)) {
@@ -425,7 +545,8 @@
       }
     }
 
-    // Branching is controlled by age, energy and hierarchy.
+    // Branching.
+
     tip.branchTimer -= dt;
 
     if (
@@ -436,14 +557,80 @@
       branch(tip);
     }
 
-    // Growth naturally slows as energy is depleted.
+    // Remove tips that leave the canvas.
+
     if (
-      tip.x < -80 || tip.x > w + 80 ||
-      tip.y < -80 || tip.y > h + 80
-    ) return false;
+      tip.x < -80 ||
+      tip.x > w + 80 ||
+      tip.y < -80 ||
+      tip.y > h + 80
+    ) {
+      return false;
+    }
 
     return true;
   }
+
+  // =====================================================
+  // GEOMETRY MANAGEMENT
+  // =====================================================
+
+  function pruneGeometry() {
+    const activePaths = new Set(
+      tips.map(t => t.path.id)
+    );
+
+    if (
+      paths.length <= CONFIG.maxPaths &&
+      totalPoints <= CONFIG.maxPoints
+    ) {
+      return;
+    }
+
+    // Old inactive pathways are removed first.
+
+    const inactive = paths
+      .filter(p => !activePaths.has(p.id))
+      .sort((a, b) => a.lastGrowth - b.lastGrowth);
+
+    while (
+      inactive.length &&
+      (
+        paths.length > CONFIG.maxPaths ||
+        totalPoints > CONFIG.maxPoints
+      )
+    ) {
+      const path = inactive.shift();
+
+      const index = paths.indexOf(path);
+
+      if (index === -1) continue;
+
+      paths.splice(index, 1);
+      totalPoints -= path.points.length;
+    }
+
+    // Remove anchors belonging to deleted pathways.
+
+    const validIds = new Set(
+      paths.map(p => p.id)
+    );
+
+    anchors = anchors.filter(
+      a => validIds.has(a.owner)
+    );
+
+    rebuildGrid();
+
+    totalPoints = paths.reduce(
+      (sum, p) => sum + p.points.length,
+      0
+    );
+  }
+
+  // =====================================================
+  // MAIN SIMULATION
+  // =====================================================
 
   function simulate(dt) {
     elapsed += dt;
@@ -454,19 +641,27 @@
       }
     }
 
-    // The organism should expand from existing structure,
-    // not repeatedly generate unrelated random seeds.
-    if (tips.length < 9 && paths.length < CONFIG.maxPaths) {
-      const candidates = tips.filter(t => t.energy > 0.5);
+    // Encourage expansion from existing structure.
+
+    if (
+      tips.length < 9 &&
+      paths.length < CONFIG.maxPaths
+    ) {
+      const candidates = tips.filter(
+        t => t.energy > 0.5
+      );
 
       if (candidates.length) {
         const parent = candidates[
           Math.floor(Math.random() * candidates.length)
         ];
 
-        if (parent.level < 2) branch(parent);
+        if (parent.level < 2) {
+          branch(parent);
+        }
       } else if (tips.length === 0) {
-        // Rare recovery if all active tips have exhausted.
+        // Rare recovery when all growth has stopped.
+
         createTip(
           rand(w * 0.65, w * 0.9),
           rand(h * 0.2, h * 0.8),
@@ -476,51 +671,31 @@
       }
     }
 
-    // Limit accumulated geometry.
-    if (paths.length > CONFIG.maxPaths) {
-      const remove = paths.length - CONFIG.maxPaths;
-      paths.splice(0, remove);
-    }
+    // Periodically remove old spatial anchors.
 
-    if (totalPoints > CONFIG.maxPoints) {
-      // Remove the oldest inactive geometry first.
-      const inactive = paths
-        .filter(p => !tips.some(t => t.path === p))
-        .sort((a, b) => a.lastGrowth - b.lastGrowth);
-
-      const removeCount = Math.min(
-        inactive.length,
-        Math.ceil(inactive.length * 0.15)
-      );
-
-      for (let i = 0; i < removeCount; i++) {
-        totalPoints -= inactive[i].points.length;
-        const index = paths.indexOf(inactive[i]);
-        if (index !== -1) paths.splice(index, 1);
-      }
-
-      totalPoints = paths.reduce(
-        (sum, p) => sum + p.points.length, 0
-      );
-    }
-
-    // Periodic spatial index maintenance.
-    if (Math.floor(elapsed) % 12 === 0 &&
-        Math.abs(elapsed - Math.round(elapsed)) < dt) {
+    if (
+      Math.floor(elapsed / 12) !==
+      Math.floor((elapsed - dt) / 12)
+    ) {
       anchors = anchors.filter(
         a => elapsed - a.time < 110
       );
+
       rebuildGrid();
     }
+
+    // Junctions have a finite visual lifetime.
 
     junctions = junctions.filter(
       j => elapsed - j.created < 35
     );
+
+    pruneGeometry();
   }
 
-  // -------------------------------------------------------
+  // =====================================================
   // RENDERING
-  // -------------------------------------------------------
+  // =====================================================
 
   function render() {
     ctx.clearRect(0, 0, w, h);
@@ -528,105 +703,178 @@
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
-    // Existing hyphal structures.
+    // ---------------------------------------------------
+    // Established pathways
+    // ---------------------------------------------------
+
     for (const path of paths) {
       const pts = path.points;
+
       if (pts.length < 2) continue;
 
-      const inactive = elapsed - path.lastGrowth;
+      const inactive =
+        elapsed - path.lastGrowth;
 
       let opacity = 1;
 
       if (inactive > CONFIG.fadeStart) {
         opacity = clamp(
-          1 - (inactive - CONFIG.fadeStart) /
+          1 -
+          (inactive - CONFIG.fadeStart) /
           (CONFIG.fadeEnd - CONFIG.fadeStart),
-          0, 1
+          0,
+          1
         );
       }
 
-      // Successful connections persist slightly longer.
-      opacity *= 0.52 + path.reinforcement * 0.3;
+      // Reinforced pathways persist longer.
+
+      opacity *=
+        0.52 + path.reinforcement * 0.3;
 
       if (opacity < 0.015) continue;
 
       ctx.globalAlpha = opacity * 0.78;
+
       ctx.strokeStyle = path.colour;
-      ctx.lineWidth = path.width *
+
+      ctx.lineWidth =
+        path.width *
         (1 + path.reinforcement * 0.28);
 
       ctx.beginPath();
+
       ctx.moveTo(pts[0].x, pts[0].y);
 
       for (let i = 1; i < pts.length; i++) {
-        ctx.lineTo(pts[i].x, pts[i].y);
+        ctx.lineTo(
+          pts[i].x,
+          pts[i].y
+        );
       }
 
       ctx.stroke();
     }
 
-    // Subtle junctions.
+    // ---------------------------------------------------
+    // Anastomosis junctions
+    // ---------------------------------------------------
+
     for (const j of junctions) {
       const age = elapsed - j.created;
-      const alpha = clamp(1 - age / 35, 0, 1);
+
+      const alpha = clamp(
+        1 - age / 35,
+        0,
+        1
+      );
 
       ctx.globalCompositeOperation = 'lighter';
+
       ctx.globalAlpha = alpha * 0.13;
+
       ctx.fillStyle = CONFIG.junction;
 
       ctx.beginPath();
+
       ctx.arc(
-        j.x, j.y,
+        j.x,
+        j.y,
         2.2 + alpha * 1.4,
-        0, TAU
+        0,
+        TAU
       );
+
       ctx.fill();
     }
 
-    // Active hyphal tips.
-    // Only the growing extremities receive illumination.
+    // ---------------------------------------------------
+    // Active growth tips
+    // ---------------------------------------------------
+
     for (const tip of tips) {
-      const radius = tip.level === 0 ? 2.0 :
-                     tip.level === 1 ? 1.4 : 0.9;
+      const radius =
+        tip.level === 0 ? 2.0 :
+        tip.level === 1 ? 1.4 :
+        0.9;
 
       ctx.globalCompositeOperation = 'lighter';
-      ctx.globalAlpha = CONFIG.glow * tip.energy * 2;
+
+      ctx.globalAlpha =
+        CONFIG.glow * tip.energy * 2;
+
       ctx.fillStyle = CONFIG.colours[tip.level];
 
       ctx.beginPath();
-      ctx.arc(tip.x, tip.y, radius * 2.4, 0, TAU);
+
+      ctx.arc(
+        tip.x,
+        tip.y,
+        radius * 2.4,
+        0,
+        TAU
+      );
+
       ctx.fill();
 
-      ctx.globalAlpha = 0.65 * tip.energy;
+      ctx.globalAlpha =
+        0.65 * tip.energy;
+
       ctx.beginPath();
-      ctx.arc(tip.x, tip.y, radius, 0, TAU);
+
+      ctx.arc(
+        tip.x,
+        tip.y,
+        radius,
+        0,
+        TAU
+      );
+
       ctx.fill();
     }
 
+    // Restore canvas state.
+
     ctx.globalAlpha = 1;
-    ctx.globalCompositeOperation = 'source-over';
+
+    ctx.globalCompositeOperation =
+      'source-over';
   }
 
-  // -------------------------------------------------------
-  // LIFECYCLE
-  // -------------------------------------------------------
+  // =====================================================
+  // CANVAS SIZING
+  // =====================================================
 
   function resize() {
     const rect = hero.getBoundingClientRect();
-    if (!rect.width || !rect.height) return false;
+
+    if (!rect.width || !rect.height) {
+      return false;
+    }
 
     w = rect.width;
     h = rect.height;
 
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    dpr = Math.min(
+      window.devicePixelRatio || 1,
+      2
+    );
 
     canvas.width = Math.round(w * dpr);
     canvas.height = Math.round(h * dpr);
 
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.setTransform(
+      dpr, 0,
+      0, dpr,
+      0, 0
+    );
 
     return true;
   }
+
+  // =====================================================
+  // INITIALISATION
+  // =====================================================
 
   function initialise() {
     if (!resize()) return;
@@ -644,19 +892,29 @@
 
     createSeeds();
 
-    // Establish an initial network before showing the hero.
-    // This avoids the empty-canvas effect on page load.
-    for (let i = 0; i < 1000; i++) {
-      simulate(MAX_STEP);
+    // Establish a mature initial network.
+
+    for (
+      let i = 0;
+      i < CONFIG.warmupSteps;
+      i++
+    ) {
+      simulate(CONFIG.timestep);
     }
 
     render();
   }
 
+  // =====================================================
+  // ANIMATION LOOP
+  // =====================================================
+
   function frame(timestamp) {
     if (!running || !visible) return;
 
-    if (!lastFrame) lastFrame = timestamp;
+    if (!lastFrame) {
+      lastFrame = timestamp;
+    }
 
     const delta = Math.min(
       (timestamp - lastFrame) / 1000,
@@ -664,14 +922,18 @@
     );
 
     lastFrame = timestamp;
+
     accumulator += delta;
 
-    while (accumulator >= MAX_STEP) {
-      simulate(MAX_STEP);
-      accumulator -= MAX_STEP;
+    while (
+      accumulator >= CONFIG.timestep
+    ) {
+      simulate(CONFIG.timestep);
+      accumulator -= CONFIG.timestep;
     }
 
     render();
+
     raf = requestAnimationFrame(frame);
   }
 
@@ -680,69 +942,106 @@
 
     running = true;
     lastFrame = 0;
+
     raf = requestAnimationFrame(frame);
   }
 
   function stop() {
     running = false;
+
     cancelAnimationFrame(raf);
+
     raf = 0;
   }
 
   function refresh() {
     stop();
+
     initialise();
 
-    if (!reducedMotion && visible) start();
+    if (!reducedMotion && visible) {
+      start();
+    }
   }
 
-  // -------------------------------------------------------
-  // RESPONSIVE AND PERFORMANCE
-  // -------------------------------------------------------
+  // =====================================================
+  // RESPONSIVE BEHAVIOUR
+  // =====================================================
 
   let resizeTimer;
 
   if ('ResizeObserver' in window) {
-    const observer = new ResizeObserver(() => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(refresh, 250);
-    });
+    const resizeObserver =
+      new ResizeObserver(() => {
+        clearTimeout(resizeTimer);
 
-    observer.observe(hero);
+        resizeTimer = setTimeout(
+          refresh,
+          250
+        );
+      });
+
+    resizeObserver.observe(hero);
+
   } else {
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(refresh, 250);
+
+      resizeTimer = setTimeout(
+        refresh,
+        250
+      );
     });
   }
 
-  // Don't run the simulation when the hero is off-screen.
+  // =====================================================
+  // VIEWPORT VISIBILITY
+  // =====================================================
+
   if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(entries => {
-      visible = entries[0].isIntersecting;
+    const visibilityObserver =
+      new IntersectionObserver(entries => {
+        visible = entries[0].isIntersecting;
 
-      if (visible) {
-        if (!reducedMotion) start();
-        else render();
-      } else {
-        stop();
-      }
-    }, { threshold: 0 });
+        if (visible) {
+          if (!reducedMotion) {
+            start();
+          } else {
+            render();
+          }
+        } else {
+          stop();
+        }
+      }, {
+        threshold: 0
+      });
 
-    observer.observe(hero);
+    visibilityObserver.observe(hero);
   }
 
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      stop();
-    } else if (visible && !reducedMotion) {
-      start();
-    }
-  });
+  // =====================================================
+  // TAB VISIBILITY
+  // =====================================================
 
-  // Initialisation.
+  document.addEventListener(
+    'visibilitychange',
+    () => {
+      if (document.hidden) {
+        stop();
+      } else if (visible && !reducedMotion) {
+        start();
+      }
+    }
+  );
+
+  // =====================================================
+  // START
+  // =====================================================
+
   initialise();
 
-  if (!reducedMotion) start();
+  if (!reducedMotion) {
+    start();
+  }
 
 })();
