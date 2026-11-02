@@ -10,8 +10,6 @@ A shared understanding of key concepts is essential for working together, for do
 
 These concepts are the fundamental building blocks of our thinking and our doing. Each concept is explained in just a few paragraphs, with links to additional resources.
 
-## 🔗 LINKS
-
 - [Agency](/concepts/agency/)
 - [Autonomy](/concepts/autonomy/)
 - [Biomimetics](/concepts/biomimetics/)
