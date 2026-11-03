@@ -48,7 +48,6 @@
   --max-width: 1200px;
   --container-padding: 0 1rem;
   --header-height: 64px;
-  --card-width: min(95vw, var(--max-width));
   --card-stack-offset: 70px;
   --stack-dwell: 120px;
   --transition: all 0.5s ease;
@@ -267,13 +266,6 @@ h1, h2, h3, h4, h5, h6 {
   background-color: var(--bg-off-white);
 }
 
-/* Match the services card column exactly, so the heading sits on the
-   same left edge as the cards below it */
-.section-title .container {
-  max-width: var(--card-width);
-  padding: 0;
-}
-
 /* Section title rule — the same line used before "Euler Partners" in
    the hero-intro eyebrow, here sitting above the heading */
 .section-title h2,
@@ -383,7 +375,7 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: var(--radius-lg);
   border: 1px solid transparent;
   padding: var(--space-md) var(--space-lg);
-  width: var(--card-width);
+  width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
 }
@@ -394,16 +386,16 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
 }
 
+/* Same measure as the .container used by the card sections below, so the
+   service cards keep the same side margins as the partner/proof cards */
 .services-container {
   display: flex;
   flex-direction: column;
   gap: 0;
-  width: var(--card-width);
-  max-width: none;
-  margin: 0;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--container-padding);
 }
 
 .service-flex-wrapper {
@@ -928,7 +920,6 @@ h1, h2, h3, h4, h5, h6 {
 @media (max-width: 768px) {
   :root {
     --header-height: 56px;
-    --card-width: 95%;
   }
   .header {
     height: var(--header-height);
@@ -1126,11 +1117,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Section intro lead under a heading: muted secondary colour and a
-   readable measure, matching the hero-subtitle treatment */
+   readable measure, matching the hero-subtitle treatment. Where the
+   card grid below is two columns, cap the intro at the first card's
+   width so its right edge aligns with the card underneath. */
 .section-intro {
   max-width: 60ch;
   color: var(--text-medium);
   margin-bottom: var(--space-lg);
+}
+
+@media (min-width: 768px) {
+  .partners-section .section-intro,
+  .proof-section .section-intro {
+    max-width: calc((100% - var(--space-lg)) / 2);
+  }
 }
 
 .partner-grid {
@@ -1270,13 +1270,6 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0;
     background-color: var(--bg-off-white);
     position: relative;
-  }
-  .services-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    margin: 0 auto;
-    width: 100%;
   }
   .services-section {
     padding: var(--space-lg) 0 var(--space-3xl) 0;
