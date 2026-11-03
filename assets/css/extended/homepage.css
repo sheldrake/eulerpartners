@@ -342,9 +342,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .hero-questions {
-  font-size: clamp(2rem, 5vw, 3.8rem);
+  font-size: clamp(1.2rem, 5vw, 2.8rem);
   line-height: 1.3;
-  font-weight: 600;
+  font-weight: 400;
   color: var(--text-dark);
   margin-bottom: var(--space-lg);
 }
@@ -953,7 +953,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .hero-questions {
-  font-size: clamp(2rem, 5vw, 3.8rem);
+  font-size: clamp(1.2rem, 5vw, 2.8rem);
   line-height: 1.3;
   font-weight: 400;
   color: var(--text-dark);
@@ -1910,6 +1910,14 @@ h1, h2, h3, h4, h5, h6 {
   background-color: var(--bg-off-white);
 }
 
+/* Section intro lead under a heading: muted secondary colour and a
+   readable measure, matching the hero-subtitle treatment */
+.section-intro {
+  max-width: 60ch;
+  color: var(--text-medium);
+  margin-bottom: var(--space-lg);
+}
+
 .partner-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -2261,7 +2269,7 @@ h1, h2, h3, h4, h5, h6 {
   margin: 1.35rem 0 0;
   max-width: 52ch;
   font-size: clamp(1rem, 1.3vw, 1.15rem);
-  line-height: 1.6;
+  line-height: 1.4;
   color: rgb(255 255 255 / 0.72);
 }
 
@@ -2992,6 +3000,14 @@ h1, h2, h3, h4, h5, h6 {
   background-color: var(--bg-off-white);
 }
 
+/* Section intro lead under a heading: muted secondary colour and a
+   readable measure, matching the hero-subtitle treatment */
+.section-intro {
+  max-width: 60ch;
+  color: var(--text-medium);
+  margin-bottom: var(--space-lg);
+}
+
 .partner-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -3336,8 +3352,8 @@ h1, h2, h3, h4, h5, h6 {
 .hero-subtitle {
   margin: 1.35rem 0 0;
   max-width: 52ch;
-  font-size: clamp(1rem, 1.3vw, 1.15rem);
-  line-height: 1.6;
+  font-size: clamp(1.75rem, 1.3vw, 2.25rem);
+  line-height: 1.4;
   color: rgb(255 255 255 / 0.72);
 }
 
