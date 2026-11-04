@@ -288,6 +288,7 @@ h1, h2, h3, h4, h5, h6 {
   top: 0;
   left: 0;
   width: 25rem;
+  max-width: 90dvw;
   height: 1px;
   background-color: var(--brand-primary);
 }
