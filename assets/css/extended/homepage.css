@@ -273,14 +273,16 @@ h1, h2, h3, h4, h5, h6 {
    the hero-intro eyebrow, here sitting above the heading */
 .section-title h2,
 .proof-section h2,
-.partners-section h2 {
+.partners-section h2,
+.contact-section h2 {
   position: relative;
   padding-top: var(--space-sm);
 }
 
 .section-title h2::before,
 .proof-section h2::before,
-.partners-section h2::before {
+.partners-section h2::before,
+.contact-section h2::before {
   content: "";
   position: absolute;
   top: 0;
@@ -302,11 +304,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .hero-questions {
-  font-size: clamp(1.2rem, 5vw, 2.8rem);
+  font-size: clamp(1.2rem, 6vw, 2.8rem);
   line-height: 1.3;
   font-weight: 400;
   color: var(--text-dark);
   margin-bottom: var(--space-lg);
+  /* background: rgba(26, 61, 42, 0.045); */
 }
 
 .hero-questions span {
@@ -384,7 +387,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .services-section {
-  padding: var(--space-lg) 0 var(--space-3xl) 0;
+  padding: var(--space-lg) 0 var(--space-lg) 0;
   background-color: var(--bg-off-white);
   position: relative;
 }
@@ -1119,20 +1122,45 @@ h1, h2, h3, h4, h5, h6 {
   background-color: var(--bg-off-white);
 }
 
-/* Section intro lead under a heading: muted secondary colour and a
-   readable measure, matching the hero-subtitle treatment. Where the
-   card grid below is two columns, cap the intro at the first card's
-   width so its right edge aligns with the card underneath. */
+/* Section intro lead under a heading: muted secondary colour and a readable measure, matching the hero-subtitle treatment. Centred with its heading from 768px up (see the min-width block below). */
 .section-intro {
-  max-width: 60ch;
+  max-width: 34em;
   color: var(--text-medium);
   margin-bottom: var(--space-lg);
 }
 
 @media (min-width: 768px) {
-  .partners-section .section-intro,
-  .proof-section .section-intro {
-    max-width: calc((100% - var(--space-lg)) / 2);
+  /* Section headings and their intro leads are centred on desktop */
+  .section-title h2,
+  .proof-section h2,
+  .partners-section h2,
+  .terms-section h2,
+  .contact-section h2 {
+    text-align: center;
+  }
+
+  /* Keep the heading rule centred with its text */
+  .section-title h2::before,
+  .proof-section h2::before,
+  .partners-section h2::before,
+  .contact-section h2::before {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .section-intro {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .contact-section .contact-info {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .contact-section .text-lead {
+    text-align: center;
   }
 }
 
@@ -1275,7 +1303,7 @@ h1, h2, h3, h4, h5, h6 {
     position: relative;
   }
   .services-section {
-    padding: var(--space-lg) 0 var(--space-3xl) 0;
+    padding: var(--space-lg) 0 var(--space-lg) 0;
   }
   .service-deliverables {
   /* min-height: var(--card-image-height); */
