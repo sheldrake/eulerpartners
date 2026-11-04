@@ -7,6 +7,11 @@ theme = 'PaperMod'  # Change to your chosen theme name
     description = "Guiding boards and leadership teams through AI adoption, agentic governance, and adaptive organisational design."
     author = "Euler Partners"
 
+    [params.assets]
+        favicon = "favicon.svg"
+        theme_color = "#7ba696"
+        msapplication_TileColor = "#7ba696"
+
 [menu]
     [[menu.main]]
         identifier = "home"
