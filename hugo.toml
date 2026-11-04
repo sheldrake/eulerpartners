@@ -4,7 +4,7 @@ title = 'Euler Partners'
 theme = 'PaperMod'  # Change to your chosen theme name
 
 [params]
-    description = "Boutique management and technology consulting"
+    description = "Guiding boards and leadership teams through AI adoption, agentic governance, and adaptive organisational design."
     author = "Euler Partners"
 
 [menu]
