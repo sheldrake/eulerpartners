@@ -287,9 +287,9 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   top: 0;
   left: 0;
-  width: 3rem;
-  height: 2px;
-  background-color: currentColor;
+  width: 25rem;
+  height: 1px;
+  background-color: var(--brand-primary);
 }
 
 /* ===== Campaign Section ===== */
@@ -387,7 +387,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .services-section {
-  padding: var(--space-lg) 0 var(--space-lg) 0;
   background-color: var(--bg-off-white);
   position: relative;
 }
@@ -922,6 +921,16 @@ h1, h2, h3, h4, h5, h6 {
   border-bottom-color: rgba(255, 255, 255, 0.7);
 }
 
+/* PaperMod lifts the scroll-to-top button 5rem up on narrow viewports
+   (theme zmedia.css: .list .top-link at max-width 900px) so it clears
+   list-page footers. This site's footer is short, so keep the button
+   pinned to the bottom right. */
+@media screen and (max-width: 900px) {
+  .list .top-link {
+    transform: none;
+  }
+}
+
 /* ===== Responsive Design ===== */
 @media (max-width: 768px) {
   :root {
@@ -997,7 +1006,7 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 100%;
   }
   .services-section {
-    padding: var(--space-lg) 0;
+    padding-top: var(--space-lg);
   }
   .terms-section,
   .contact-section {
@@ -1303,7 +1312,7 @@ h1, h2, h3, h4, h5, h6 {
     position: relative;
   }
   .services-section {
-    padding: var(--space-lg) 0 var(--space-lg) 0;
+    padding-top: var(--space-lg);
   }
   .service-deliverables {
   /* min-height: var(--card-image-height); */
