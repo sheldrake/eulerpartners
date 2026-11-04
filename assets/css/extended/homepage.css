@@ -195,12 +195,15 @@ h1, h2, h3, h4, h5, h6 {
   height: var(--header-height);
   background-color: var(--bg-white);
   border-bottom: 1px solid #e2e8f0;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  /* visibility included so the theme's global .hidden{visibility:hidden}
+     doesn't snap the header shut before the slide-up finishes */
+  transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .header.hidden {
   transform: translateY(-100%);
   opacity: 0;
+  visibility: hidden;
 }
 
 .header .container {
