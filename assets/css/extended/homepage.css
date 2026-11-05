@@ -1020,6 +1020,31 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* Phone-width viewports: pin the hero text to exactly the first viewport so
+   the fold lands where the hero copy ends — the CTA row then starts 1px below
+   the fold. min-height uses dvh (tracks the mobile URL bar; the vh line is
+   the fallback) minus the fixed header and the hero's top padding. min-height
+   rather than height, so on very short screens the text grows and scrolls
+   instead of being clipped. */
+@media (max-width: 600px) {
+  .hero-intro__text {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - var(--header-height) - var(--space-5xl));
+    min-height: calc(100dvh - var(--header-height) - var(--space-5xl));
+  }
+  .hero-intro .hero-subtitle {
+    margin-top: auto;                /* slack opens above the subtitle... */
+    margin-bottom: var(--space-xl);  /* ...so the text never touches the fold */
+  }
+  .hero-intro .hero-intro__cta {
+    padding-block: 0;
+  }
+  .hero-intro .hero-cta {
+    margin-top: 1px;                 /* top of the CTA: a pixel below the fold */
+  }
+}
+
 @media (max-width: 480px) {
   .container {
     padding: var(--container-padding);
@@ -1514,7 +1539,15 @@ h1, h2, h3, h4, h5, h6 {
   max-width: 700px;
   position: relative;
   z-index: 1;
-  padding-block: clamp(3.5rem, 11vh, 7rem);
+  padding-block: clamp(3.5rem, 11vh, 7rem) 0;
+}
+
+/* The CTA sits in its own container row so that on phone-width viewports the
+   hero text alone can be pinned to the first viewport (see the max-width:
+   600px block below). The row carries the hero's bottom padding, so wider
+   viewports render exactly as before. */
+.hero-intro .hero-intro__cta {
+  padding-block: 0 clamp(3.5rem, 11vh, 7rem);
 }
 
 /* Eyebrow sits on the dark shell: same colour as the subtitle, not brand green.
