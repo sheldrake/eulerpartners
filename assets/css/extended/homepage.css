@@ -1020,31 +1020,6 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* Phone-width viewports: pin the hero text to exactly the first viewport so
-   the fold lands where the hero copy ends — the CTA row then starts 1px below
-   the fold. min-height uses dvh (tracks the mobile URL bar; the vh line is
-   the fallback) minus the fixed header and the hero's top padding. min-height
-   rather than height, so on very short screens the text grows and scrolls
-   instead of being clipped. */
-@media (max-width: 600px) {
-  .hero-intro__text {
-    display: flex;
-    flex-direction: column;
-    min-height: calc(100vh - var(--header-height) - var(--space-5xl));
-    min-height: calc(100dvh - var(--header-height) - var(--space-5xl));
-  }
-  .hero-intro .hero-subtitle {
-    margin-top: auto;                /* slack opens above the subtitle... */
-    margin-bottom: var(--space-xl);  /* ...so the text never touches the fold */
-  }
-  .hero-intro .hero-intro__cta {
-    padding-block: 0;
-  }
-  .hero-intro .hero-cta {
-    margin-top: 1px;                 /* top of the CTA: a pixel below the fold */
-  }
-}
-
 @media (max-width: 480px) {
   .container {
     padding: var(--container-padding);
@@ -1741,4 +1716,54 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: var(--radius-sm);
   display: block;
   margin: var(--space-lg) auto; /* Centers the image and adds space above/below */
+}
+
+/* Phone-width viewports: pin the hero text to exactly the first viewport so
+   the fold lands where the hero copy ends — the CTA row then starts 1px below
+   the fold. min-height uses dvh (tracks the mobile URL bar; the vh line is
+   the fallback) minus the fixed header and the hero's top padding. min-height
+   rather than height, so on very short screens the text grows and scrolls
+   instead of being clipped.
+   NOTE: kept at the END of the file on purpose — the base .hero-intro rules
+   live below the earlier media queries, so these overrides must come after
+   them to win the cascade at equal specificity. */
+@media (max-width: 600px) {
+  .hero-intro {
+    --hero-intro-pad-top: var(--space-5xl);
+    padding-top: var(--hero-intro-pad-top);
+  }
+  .hero-intro__text {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - var(--header-height) - var(--hero-intro-pad-top));
+    min-height: calc(100dvh - var(--header-height) - var(--hero-intro-pad-top));
+  }
+  .hero-intro .hero-subtitle {
+    margin-top: auto;                /* slack opens above the subtitle... */
+    margin-bottom: var(--space-xl);  /* ...so the text never touches the fold */
+  }
+  .hero-intro .hero-intro__cta {
+    padding-block: 0;
+  }
+  .hero-intro .hero-cta {
+    margin-top: 1px;                 /* top of the CTA: a pixel below the fold */
+  }
+  /* A touch smaller than the base clamp(1.2rem, 6vw, 2.8rem) so the
+     campaign line wraps less aggressively on narrow phones */
+  .hero-questions {
+    font-size: clamp(1.1rem, 5.5vw, 2.8rem);
+  }
+}
+
+/* Very short phone viewports (e.g. 320x480): reclaim vertical space from the
+   hero's top padding and the text column's own top padding so the whole hero
+   text still sits above the fold on first load. The fold pin above follows
+   --hero-intro-pad-top automatically. */
+@media (max-width: 600px) and (max-height: 600px) {
+  .hero-intro {
+    --hero-intro-pad-top: var(--space-2xl);
+  }
+  .hero-intro .hero-intro__text {
+    padding-top: var(--space-lg);
+  }
 }
