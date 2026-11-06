@@ -1038,10 +1038,12 @@
   // START
   // =====================================================
 
-  initialise();
+  setTimeout(() => {
+    initialise();
 
-  if (!reducedMotion) {
-    start();
-  }
+    if (!reducedMotion) {
+      start();
+    }
+  }, 2500);
 
 })();
