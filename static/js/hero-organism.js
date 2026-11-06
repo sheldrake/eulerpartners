@@ -970,18 +970,15 @@
 
   let resizeTimer;
 
-  if ('ResizeObserver' in window) {
-    const resizeObserver =
-      new ResizeObserver(() => {
-        clearTimeout(resizeTimer);
+const resizeObserver = new ResizeObserver(() => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    // Do not reinitialise the organism on resize.
+    // The existing network should remain intact.
+  }, 250);
+});
 
-        resizeTimer = setTimeout(
-          refresh,
-          250
-        );
-      });
-
-    resizeObserver.observe(hero);
+resizeObserver.observe(hero);
 
   } else {
     window.addEventListener('resize', () => {
