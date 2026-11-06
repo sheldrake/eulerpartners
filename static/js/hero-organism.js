@@ -968,21 +968,19 @@
   // =====================================================
 
   let resizeTimer;
+  let firstResize = true;
 
   if ('ResizeObserver' in window) {
-    let initialised = false;
-
     const resizeObserver = new ResizeObserver(() => {
       clearTimeout(resizeTimer);
 
       resizeTimer = setTimeout(() => {
-        if (!initialised) {
-          initialised = true;
+        if (firstResize) {
+          firstResize = false;
           return;
         }
 
-        // Preserve the existing organism.
-        // Do not call refresh() here.
+        refresh();
       }, 250);
     });
 
@@ -991,6 +989,15 @@
   } else {
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
+
       resizeTimer = setTimeout(refresh, 250);
     });
   }
+
+    initialise();
+
+  if (!reducedMotion) {
+    start();
+  }
+
+})();
