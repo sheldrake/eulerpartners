@@ -963,84 +963,34 @@
       start();
     }
   }
-
   // =====================================================
   // RESPONSIVE BEHAVIOUR
   // =====================================================
 
   let resizeTimer;
 
-const resizeObserver = new ResizeObserver(() => {
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => {
-    // Do not reinitialise the organism on resize.
-    // The existing network should remain intact.
-  }, 250);
-});
+  if ('ResizeObserver' in window) {
+    let initialised = false;
 
-resizeObserver.observe(hero);
+    const resizeObserver = new ResizeObserver(() => {
+      clearTimeout(resizeTimer);
+
+      resizeTimer = setTimeout(() => {
+        if (!initialised) {
+          initialised = true;
+          return;
+        }
+
+        // Preserve the existing organism.
+        // Do not call refresh() here.
+      }, 250);
+    });
+
+    resizeObserver.observe(hero);
 
   } else {
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
-
-      resizeTimer = setTimeout(
-        refresh,
-        250
-      );
+      resizeTimer = setTimeout(refresh, 250);
     });
   }
-
-  // =====================================================
-  // VIEWPORT VISIBILITY
-  // =====================================================
-
-  if ('IntersectionObserver' in window) {
-    const visibilityObserver =
-      new IntersectionObserver(entries => {
-        visible = entries[0].isIntersecting;
-
-        if (visible) {
-          if (!reducedMotion) {
-            start();
-          } else {
-            render();
-          }
-        } else {
-          stop();
-        }
-      }, {
-        threshold: 0
-      });
-
-    visibilityObserver.observe(hero);
-  }
-
-  // =====================================================
-  // TAB VISIBILITY
-  // =====================================================
-
-  document.addEventListener(
-    'visibilitychange',
-    () => {
-      if (document.hidden) {
-        stop();
-      } else if (visible && !reducedMotion) {
-        start();
-      }
-    }
-  );
-
-  // =====================================================
-  // START
-  // =====================================================
-
-  setTimeout(() => {
-    initialise();
-
-    if (!reducedMotion) {
-      start();
-    }
-  }, 2500);
-
-})();
