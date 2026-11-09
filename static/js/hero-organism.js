@@ -963,25 +963,35 @@
       start();
     }
   }
+
   // =====================================================
   // RESPONSIVE BEHAVIOUR
   // =====================================================
 
   let resizeTimer;
   let firstResize = true;
+  let lastWidth = hero.getBoundingClientRect().width;
 
   if ('ResizeObserver' in window) {
-    const resizeObserver = new ResizeObserver(() => {
+    const resizeObserver = new ResizeObserver(entries => {
+      const newWidth = entries[0].contentRect.width;
+
+      if (firstResize) {
+        firstResize = false;
+        lastWidth = newWidth;
+        return;
+      }
+
+      // Ignore height-only changes, including iPhone
+      // Safari's collapsing browser toolbar.
+      if (Math.abs(newWidth - lastWidth) < 2) {
+        return;
+      }
+
+      lastWidth = newWidth;
+
       clearTimeout(resizeTimer);
-
-      resizeTimer = setTimeout(() => {
-        if (firstResize) {
-          firstResize = false;
-          return;
-        }
-
-        refresh();
-      }, 250);
+      resizeTimer = setTimeout(refresh, 250);
     });
 
     resizeObserver.observe(hero);
@@ -989,15 +999,6 @@
   } else {
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
-
       resizeTimer = setTimeout(refresh, 250);
     });
   }
-
-    initialise();
-
-  if (!reducedMotion) {
-    start();
-  }
-
-})();
