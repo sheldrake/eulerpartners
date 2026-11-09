@@ -970,16 +970,30 @@
 
   let resizeTimer;
   let firstResize = true;
+  let lastWidth = w;
+  let lastHeight = h;
 
   if ('ResizeObserver' in window) {
     const resizeObserver = new ResizeObserver(() => {
       clearTimeout(resizeTimer);
 
       resizeTimer = setTimeout(() => {
+        const rect = hero.getBoundingClientRect();
+
         if (firstResize) {
           firstResize = false;
+          lastWidth = rect.width;
+          lastHeight = rect.height;
           return;
         }
+
+        const widthChanged = Math.abs(rect.width - lastWidth) > 2;
+        const heightChanged = Math.abs(rect.height - lastHeight) > 2;
+
+        if (!widthChanged && !heightChanged) return;
+
+        lastWidth = rect.width;
+        lastHeight = rect.height;
 
         refresh();
       }, 250);
