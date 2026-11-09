@@ -995,7 +995,7 @@
         lastWidth = rect.width;
         lastHeight = rect.height;
 
-        refresh();
+                console.log('Resize detected — refresh suppressed');
       }, 250);
     });
 
@@ -1008,8 +1008,8 @@
     });
   }
 
-    // =====================================================
-  // VIEWPORT VISIBILITY
+  // =====================================================
+  // VIEWPORT VISIBILITY — DIAGNOSTIC
   // =====================================================
 
   if ('IntersectionObserver' in window) {
@@ -1017,14 +1017,10 @@
       new IntersectionObserver(entries => {
         visible = entries[0].isIntersecting;
 
-        if (visible) {
-          if (!reducedMotion) {
-            start();
-          } else {
-            render();
-          }
-        } else {
+        if (!visible) {
           stop();
+        } else if (!reducedMotion) {
+          start();
         }
       }, {
         threshold: 0
