@@ -970,28 +970,19 @@
 
   let resizeTimer;
   let firstResize = true;
-  let lastWidth = hero.getBoundingClientRect().width;
 
   if ('ResizeObserver' in window) {
-    const resizeObserver = new ResizeObserver(entries => {
-      const newWidth = entries[0].contentRect.width;
-
-      if (firstResize) {
-        firstResize = false;
-        lastWidth = newWidth;
-        return;
-      }
-
-      // Ignore height-only changes, including iPhone
-      // Safari's collapsing browser toolbar.
-      if (Math.abs(newWidth - lastWidth) < 2) {
-        return;
-      }
-
-      lastWidth = newWidth;
-
+    const resizeObserver = new ResizeObserver(() => {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(refresh, 250);
+
+      resizeTimer = setTimeout(() => {
+        if (firstResize) {
+          firstResize = false;
+          return;
+        }
+
+        refresh();
+      }, 250);
     });
 
     resizeObserver.observe(hero);
@@ -1002,3 +993,52 @@
       resizeTimer = setTimeout(refresh, 250);
     });
   }
+
+    // =====================================================
+  // VIEWPORT VISIBILITY
+  // =====================================================
+
+  if ('IntersectionObserver' in window) {
+    const visibilityObserver =
+      new IntersectionObserver(entries => {
+        visible = entries[0].isIntersecting;
+
+        if (visible) {
+          if (!reducedMotion) {
+            start();
+          } else {
+            render();
+          }
+        } else {
+          stop();
+        }
+      }, {
+        threshold: 0
+      });
+
+    visibilityObserver.observe(hero);
+  }
+
+  // =====================================================
+  // TAB VISIBILITY
+  // =====================================================
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      stop();
+    } else if (visible && !reducedMotion) {
+      start();
+    }
+  });
+
+  // =====================================================
+  // START
+  // =====================================================
+
+  initialise();
+
+  if (!reducedMotion) {
+    start();
+  }
+
+})();
